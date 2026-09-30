@@ -55,3 +55,9 @@ No quedan diferencias P1 o P2 abiertas dentro del alcance adaptado. Las diferenc
 - Repositorio limpio: `npm ci` seguido de `npm run build && npm test` finaliza correctamente. Netlify ejecuta el build antes de las pruebas que verifican sus archivos.
 
 El dictado requiere soporte y permiso del navegador y no se probó con micrófono. No se enviaron datos personales reales.
+
+## Crédito e identidad para compartir
+
+Se añadió `Made with ♥ by apolmig`, a 12 px en escritorio y 11 px en móvil, junto al aviso del pie. El enlace apunta al perfil de GitHub, abre una pestaña nueva y usa `noopener noreferrer`; el corazón tiene un nombre accesible. Se comprobó que queda visible en ambos diseños: [escritorio](qa/footer-credit-desktop.png) y [móvil](qa/footer-credit-mobile.png).
+
+Se revisaron el favicon SVG, los tres tamaños del ICO (16/32/48), el PNG de 32 px, el icono Apple de 180 px y los iconos del manifiesto de 192/512 px. La tarjeta social tiene exactamente 1200 × 630 px. El head servido incluye Open Graph, X, texto alternativo y URLs absolutas para el dominio previsto. Build y 9 pruebas aprobadas, sin errores de consola. Las vistas previas sociales públicas requieren el despliegue futuro del dominio.

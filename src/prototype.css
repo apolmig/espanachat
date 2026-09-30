@@ -1040,6 +1040,15 @@ textarea {
 .footer-meta a:hover {
   text-decoration: underline;
 }
+.creator-credit {
+  display: inline-block;
+  margin-top: 8px;
+  color: inherit;
+  text-decoration: none;
+}
+.credit-heart {
+  color: #a62432;
+}
 .floating-dock {
   position: fixed;
   bottom: 24px;

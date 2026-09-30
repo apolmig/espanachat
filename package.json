@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "assets:brand": "node scripts/generate-brand-assets.mjs",
     "dev": "vite --configLoader native",
     "build": "vite build --configLoader native && node scripts/prepare-sites-build.mjs",
     "preview": "vite preview",
@@ -20,6 +21,8 @@
     "vite": "6.4.2"
   },
   "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "fontkit": "^2.0.4",
     "prettier": "^3.9.9"
   }
 }

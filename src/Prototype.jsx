@@ -609,6 +609,20 @@ export function App() {
             "Prototipo independiente. Sin afiliación institucional.",
             "Independent prototype. No government affiliation.",
           )}
+          <br />
+          <a
+            className="creator-credit"
+            lang="en"
+            href="https://github.com/apolmig"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Made with{" "}
+            <span className="credit-heart" role="img" aria-label="love">
+              ♥
+            </span>{" "}
+            by apolmig
+          </a>
         </p>
         <div>
           {link("/condiciones", t("Condiciones", "Terms"))}

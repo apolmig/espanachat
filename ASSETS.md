@@ -2,6 +2,8 @@
 
 Recursos guardados localmente para esta demostración. No se ha concedido ni comprobado una licencia comercial de las fuentes o fotografías de la referencia. Antes de una publicación, revisar permisos y sustituir los activos que lo requieran.
 
+El favicon y los iconos de instalación son vectores originales del proyecto, con una burbuja de conversación y colores de España. `social-card.svg` y su PNG se generan mediante `scripts/generate-brand-assets.mjs`, con la paleta y las fuentes ya usadas en la web. El SVG convierte el texto en trazados y conserva la misma necesidad de revisar los permisos tipográficos. `fontkit` usa licencia MIT y `@resvg/resvg-js` MIT/Apache-2.0.
+
 | Activo                                                                                                                | Procedencia                                                                                                                                                                                    |
 | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Rhymes Text / Display, Helvetica Now                                                                                  | Archivos que sirve https://america.gov/ bajo `/_astro/`, inspeccionados en el navegador                                                                                                        |

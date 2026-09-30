@@ -45,3 +45,9 @@ El destino es [apolmig/espanachat](https://github.com/apolmig/espanachat), rama 
 | `dist/server/`      | Adaptador de alojamiento del starter, sin API de IA                        |
 
 Para la investigación y la arquitectura propuesta, ver [docs/arquitectura.md](docs/arquitectura.md). El informe de QA está en `design-qa.md`. Revisar `ASSETS.md` antes de publicar.
+
+## Identidad y enlaces compartidos
+
+El pie incluye un crédito discreto a [apolmig](https://github.com/apolmig). Se sirven favicon SVG, ICO y PNG, icono Apple de 180 px y un manifiesto con iconos de 192/512 px. La tarjeta social PNG mide 1200 × 630 px y tiene metadatos Open Graph y X, texto alternativo y URL absoluta para `https://www.espana.chat/`.
+
+Los activos están guardados en `public/`. Para regenerarlos con las fuentes del proyecto: `npm run assets:brand`. La fuente vectorial de la tarjeta está en `public/social-card.svg`, con texto convertido en trazados para un resultado consistente. Las previsualizaciones públicas de enlaces podrán comprobarse una vez desplegado el dominio. [Especificación Open Graph](https://ogp.me/).
