@@ -61,3 +61,9 @@ El dictado requiere soporte y permiso del navegador y no se probó con micrófon
 Se añadió `Made with ♥ by apolmig`, a 12 px en escritorio y 11 px en móvil, junto al aviso del pie. El enlace apunta al perfil de GitHub, abre una pestaña nueva y usa `noopener noreferrer`; el corazón tiene un nombre accesible. Se comprobó que queda visible en ambos diseños: [escritorio](qa/footer-credit-desktop.png) y [móvil](qa/footer-credit-mobile.png).
 
 Se revisaron el favicon SVG, los tres tamaños del ICO (16/32/48), el PNG de 32 px, el icono Apple de 180 px y los iconos del manifiesto de 192/512 px. La tarjeta social tiene exactamente 1200 × 630 px. El head servido incluye Open Graph, X, texto alternativo y URLs absolutas para el dominio previsto. Build y 9 pruebas aprobadas, sin errores de consola. Las vistas previas sociales públicas requieren el despliegue futuro del dominio.
+
+## Tarjeta fotográfica para WhatsApp
+
+La captura enviada por el usuario muestra un recorte central cuadrado de aproximadamente 90 px: la marca alineada a la izquierda de la v1 quedaba cortada y los textos pequeños no se leían. La v2 generada con ImageGen utiliza una vista cálida de Sevilla y una única marca dentro del área central. Se verificó la imagen completa y se compararon ambas versiones con el mismo [recorte central de 90 × 90 px](qa/social-card-thumbnail-comparison.png). Esta es una simulación de recorte, no una captura de una conversación real ni una garantía de formato para todos los clientes de WhatsApp.
+
+La exportación mide 1200 × 630 px y pesa 275.101 bytes en JPEG. El head apunta a `https://espana.chat/social-card-v2.jpg`, con tipo `image/jpeg`, dimensiones y texto alternativo correctos. Se acortó la descripción social. El PNG anterior se actualiza con la misma imagen como compatibilidad; el nuevo nombre de URL permite distinguir la nueva versión. El dominio canónico sigue la redirección pública www → apex comprobada en esta sesión. El build y las 9 pruebas pasan.

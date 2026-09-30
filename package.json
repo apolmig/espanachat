@@ -21,8 +21,8 @@
     "vite": "6.4.2"
   },
   "devDependencies": {
+    "@napi-rs/canvas": "^1.0.9",
     "@resvg/resvg-js": "^2.6.2",
-    "fontkit": "^2.0.4",
     "prettier": "^3.9.9"
   }
 }

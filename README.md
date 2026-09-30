@@ -48,6 +48,6 @@ Para la investigación y la arquitectura propuesta, ver [docs/arquitectura.md](d
 
 ## Identidad y enlaces compartidos
 
-El pie incluye un crédito discreto a [apolmig](https://github.com/apolmig). Se sirven favicon SVG, ICO y PNG, icono Apple de 180 px y un manifiesto con iconos de 192/512 px. La tarjeta social PNG mide 1200 × 630 px y tiene metadatos Open Graph y X, texto alternativo y URL absoluta para `https://www.espana.chat/`.
+El pie incluye un crédito discreto a [apolmig](https://github.com/apolmig). Se sirven favicon SVG, ICO y PNG, icono Apple de 180 px y un manifiesto con iconos de 192/512 px. La tarjeta social fotográfica mide 1200 × 630 px, usa un JPEG de unos 275 KB y tiene metadatos Open Graph y X con URL versionada en `https://espana.chat/social-card-v2.jpg`. La marca queda dentro del recorte central cuadrado y se evita texto pequeño.
 
-Los activos están guardados en `public/`. Para regenerarlos con las fuentes del proyecto: `npm run assets:brand`. La fuente vectorial de la tarjeta está en `public/social-card.svg`, con texto convertido en trazados para un resultado consistente. Las previsualizaciones públicas de enlaces podrán comprobarse una vez desplegado el dominio. [Especificación Open Graph](https://ogp.me/).
+Los activos de entrega están en `public/`. El maestro generado con ImageGen y el [prompt final](assets/branding/social-card-v2-prompt.md) están en `assets/branding/`. Para regenerar las exportaciones: `npm run assets:brand`. Se conserva `social-card.png` actualizado para referencias anteriores. La URL canónica sigue el dominio público observado, que redirige www a `espana.chat`. [Especificación Open Graph](https://ogp.me/).

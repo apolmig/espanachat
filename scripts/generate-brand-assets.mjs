@@ -1,33 +1,9 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { Resvg } from "@resvg/resvg-js";
-import { openSync } from "fontkit";
+import { createCanvas, loadImage } from "@napi-rs/canvas";
 
 const publicDir = new URL("../public/", import.meta.url);
-const serif = openSync(
-  fileURLToPath(
-    new URL("assets/fonts/rhymes-display-regular.C9G6ykf7.woff2", publicDir),
-  ),
-);
-const sans = openSync(
-  fileURLToPath(
-    new URL("assets/fonts/helvetica-now-text-400.DgICZbSh.woff2", publicDir),
-  ),
-);
-
-// Outlined text renders identically without relying on the machine's fonts.
-function textPaths(font, text, size, x, y, fill, tracking = 0) {
-  const run = font.layout(text);
-  const scale = size / font.unitsPerEm;
-  let pen = x;
-  const paths = run.glyphs.map((glyph, index) => {
-    const position = run.positions[index];
-    const path = `<path fill="${fill}" transform="translate(${pen + position.xOffset * scale} ${y - position.yOffset * scale}) scale(${scale} ${-scale})" d="${glyph.path.toSVG()}"/>`;
-    pen += position.xAdvance * scale + tracking;
-    return path;
-  });
-  return { svg: paths.join(""), width: pen - x };
-}
 
 const mark = `<rect width="64" height="64" rx="16" fill="#002664"/>
 <path d="M20 14h24a6 6 0 0 1 6 6v18a6 6 0 0 1-6 6H30l-10 8v-8a6 6 0 0 1-6-6V20a6 6 0 0 1 6-6Z" fill="white"/>
@@ -60,21 +36,18 @@ function ico(frames) {
   return Buffer.concat([header, ...frames.map((frame) => frame.data)]);
 }
 
-const title = textPaths(serif, "España", 184, 64, 330, "#ffffff", -8);
-const dot = textPaths(serif, ".", 184, 64 + title.width, 330, "#ef5965");
+// ImageGen supplies the finished artwork. This step only exports web formats.
+const master = await loadImage(
+  fileURLToPath(
+    new URL("../assets/branding/social-card-master-v2.png", import.meta.url),
+  ),
+);
+const socialCanvas = createCanvas(1200, 630);
+socialCanvas.getContext("2d").drawImage(master, 0, 0, 1200, 630);
+const socialJpeg = socialCanvas.encodeSync("jpeg", 88);
 const card = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-<title>España. Tus servicios públicos, más cerca.</title>
-<desc>Tarjeta de presentación de espana.chat</desc>
-<defs><linearGradient id="background" x2="1" y2="1"><stop stop-color="#002664"/><stop offset="1" stop-color="#000c1f"/></linearGradient></defs>
-<rect width="1200" height="630" fill="url(#background)"/>
-<g transform="translate(64 56) scale(1.125)">${mark}</g>
-${textPaths(sans, "espana.chat", 30, 155, 103, "#d9e4f5").svg}
-${title.svg}${dot.svg}
-${textPaths(sans, "Tus servicios públicos,", 42, 70, 422, "#ffffff").svg}
-${textPaths(sans, "más cerca.", 42, 70, 474, "#ffffff").svg}
-<g transform="translate(880 188) scale(3.35)" opacity="0.12">${mark.replace('fill="#002664"', 'fill="none"')}</g>
-<path d="M70 536H1130" stroke="#ffffff" stroke-opacity="0.18"/>
-${textPaths(sans, "Guías claras. Fuentes oficiales.", 23, 70, 580, "#bfcee3").svg}
+<title>España. Plaza de España de Sevilla al atardecer.</title>
+<image width="1200" height="630" href="data:image/jpeg;base64,${socialJpeg.toString("base64")}"/>
 </svg>`;
 
 await mkdir(publicDir, { recursive: true });
@@ -92,7 +65,11 @@ await writeFile(
   render(icon.replace('rx="16"', 'rx="0"'), 180),
 );
 await writeFile(new URL("social-card.svg", publicDir), card);
-await writeFile(new URL("social-card.png", publicDir), render(card, 1200));
+await writeFile(new URL("social-card-v2.jpg", publicDir), socialJpeg);
+await writeFile(
+  new URL("social-card.png", publicDir),
+  socialCanvas.encodeSync("png"),
+);
 await writeFile(
   new URL("site.webmanifest", publicDir),
   JSON.stringify(
@@ -118,5 +95,5 @@ await writeFile(
   ) + "\n",
 );
 console.log(
-  "Generated SVG/ICO/PNG icons, Apple icon, manifest and 1200 × 630 social card.",
+  "Generated icons, manifest and photographic 1200 × 630 social card.",
 );

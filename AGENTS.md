@@ -6,7 +6,8 @@
 - Repository: `apolmig/espanachat`. Prepare Netlify configuration for a later deployment to `www.espana.chat`. The current request authorizes uploading the project, not deploying or changing DNS.
 - Current answers are prepared local guides. Never claim a live AI model or government integration is connected until implemented and verified.
 - Use clear, concise language and no em dash in user-facing copy or communication.
-- Keep a discreet footer credit, `Made with ♥ by apolmig`, linking to `https://github.com/apolmig`. Sharing metadata uses `https://www.espana.chat/` and the local branded social card.
+- Keep a discreet footer credit, `Made with ♥ by apolmig`, linking to `https://github.com/apolmig`.
+- The live site redirects www to `https://espana.chat/`; sharing metadata follows that canonical domain. The social card uses a warm photographic view of Spain with the wordmark inside the central square crop, no tiny text, and a versioned JPEG URL. Keep that composition legible at 90 × 90 px for WhatsApp thumbnails.
 
 Run the local server yourself and open the preview in the browser available to this environment. Do not give the user server-start instructions when you can run it.
 
