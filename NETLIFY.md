@@ -3,7 +3,7 @@
 El repositorio contiene la configuración. No se ha creado un sitio Netlify, cambiado DNS ni publicado el dominio.
 
 1. En Netlify, importar `apolmig/espanachat` y elegir `main` como rama de producción.
-2. Mantener el directorio base vacío. `netlify.toml` fija `npm test && npm run build`, publicación en `dist/client` y Node 24.
+2. Mantener el directorio base vacío. `netlify.toml` fija `npm run build && npm test`, publicación en `dist/client` y Node 24. Las pruebas de empaquetado necesitan que el build ya exista.
 3. Comprobar el sitio temporal de Netlify: portada, acceso directo y recarga de `/chat`, `/privacidad` y `/preguntas`, y lectura local de PDF. No se necesitan variables de entorno en esta versión.
 4. Añadir `www.espana.chat` como dominio personalizado principal y `espana.chat` como dominio adicional. Usar los registros DNS que Netlify muestre para el sitio concreto. No se han inventado valores de DNS en este proyecto.
 5. Una vez propagados los registros, comprobar HTTPS y la redirección del dominio secundario al principal en Netlify.

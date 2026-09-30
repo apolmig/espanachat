@@ -52,5 +52,6 @@ No quedan diferencias P1 o P2 abiertas dentro del alcance adaptado. Las diferenc
 - Páginas informativas, FAQ desplegable y formulario de opinión con aviso de que no envía datos.
 - Cero errores de consola en la pestaña de revisión final.
 - `npm test`: 9 pruebas aprobadas. `npm run build`: build generado con cliente, adaptador y contrato de alojamiento del starter.
+- Repositorio limpio: `npm ci` seguido de `npm run build && npm test` finaliza correctamente. Netlify ejecuta el build antes de las pruebas que verifican sus archivos.
 
 El dictado requiere soporte y permiso del navegador y no se probó con micrófono. No se enviaron datos personales reales.
