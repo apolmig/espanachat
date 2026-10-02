@@ -111,3 +111,13 @@ La revisión independiente detectó y corrigió destinos que mezclaban alta y ce
 Verificado en navegador: Madrid/Barcelona, Alpedrete y directorio, Cuenca sin falsa personalización, Ceuta/INGESA, Cataluña/duplicado, Andalucía escrita como respuesta corta en inglés, renovación FNMT en ambos idiomas, abstención ante dos trámites, fuentes y cierre con Escape, error de nombre municipal y envío con teclado. Borrar deja diez sugerencias y devuelve el foco al contenido. El selector mueve el foco a la respuesta nueva. Consola sin errores ni advertencias en el recorrido.
 
 Build correcto, compatibilidad Sites conservada y 32 pruebas automatizadas. `npm audit` informa cero vulnerabilidades. La revisión con tamaños emulados no certifica WCAG ni sustituye teléfonos físicos. La cobertura municipal directa es de siete ciudades; el resto usa el directorio. Las respuestas continúan siendo guías preparadas sin IA.
+
+## Navegación, enlaces y teclado
+
+Fecha: 2 de octubre de 2026. Revisión de cuatro pasos y evidencia actual en `qa/usability-2026-10-02/README.md`. Se corrigen pérdidas de foco al cambiar/cancelar territorio y activar seguimientos con teclado. El compositor conserva el foco al escribir. La explicación interna pasa de siete a diez temas e incluye selección territorial local.
+
+La cabecera del chat añade Guías junto al menú; portada, fotos y tipografías se conservan. El catálogo usa el diálogo y tarjetas del producto, permite buscar en ambos idiomas, recuperar resultados y abrir una guía sin borrar el chat. A 320, 390, 768 y 1440 px no se mide desbordamiento de documento o diálogo. La cabecera inglesa no solapa controles; los dos botones miden al menos 44 px de alto. El formulario del catálogo mide 48 px.
+
+El icono de enlace copia únicamente guía, seguimiento e idioma permitidos. Se ha abierto un enlace de certificado de padrón copiado desde una respuesta de Madrid y comprobado que reconstruye orientación general sin municipio ni conversación. Cambiar idioma actualiza el enlace y borrar limpia parámetros. No se comparten consultas ni documentos.
+
+Build correcto, 38 pruebas correctas, consola sin errores/advertencias y auditoría de dependencias con cero vulnerabilidades comunicadas. Se mantienen los límites de guías preparadas, revisión territorial pendiente indicada y pruebas con tamaños emulados.

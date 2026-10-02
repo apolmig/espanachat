@@ -1,0 +1,50 @@
+
+> espana@0.0.0 test
+> node --test tests/*.test.mjs
+
+✔ every main and detail guide round-trips in both languages (7.9952ms)
+✔ sharing defaults to the main Spanish guide and only uses catalogue detail IDs (0.3789ms)
+✔ missing, unknown and duplicate guide parameters do not resolve an answer (0.4684ms)
+✔ optional fields fall back safely instead of choosing unsupported content (0.5639ms)
+✔ unrelated Unicode, private-looking query fields and supplied context are never shared (0.4048ms)
+✔ the reader resolves the caller's whitelist without mutating search parameters (0.2932ms)
+✔ exact guide questions have priority in both languages with punctuation and accents normalized (16.0192ms)
+✔ common Spanish and English requests select a single useful guide (24.3937ms)
+✔ ambiguous words, fragments and unsupported procedures do not produce a guessed answer (7.5611ms)
+✔ two distinct requested topics abstain, while ID and passport remain one family (3.5509ms)
+✔ identification named only as a method does not absorb the requested procedure (1.2885ms)
+✔ routing is pure and restricted to the provided guides, without context or generic keyword fallback (1.0527ms)
+✔ regional health card and certificate-based signature terminology has clear topic anchors (3.7137ms)
+✔ certificate renewal requests open renewal instead of obtaining a certificate (1.5127ms)
+✔ explicit lost, stolen, damaged or duplicate health cards open replacement (2.14ms)
+✔ municipal certificates and registration slips open proof of registration, not first registration (5.3942ms)
+✔ detail matching is pure, rejects mixed families, and requires the correct supported detail (1.3467ms)
+✔ every suggested question resolves to its own guide in both languages (10.4101ms)
+✔ free-form common queries resolve despite accents and case (14.5354ms)
+✔ unknown questions do not inherit an unrelated previous answer (0.671ms)
+✔ all guides have real source entries and supported follow-up questions (0.977ms)
+✔ follow-ups provide a distinct answer in the same topic in both languages (4.6154ms)
+✔ short follow-ups use the current topic without carrying unrelated context (6.9919ms)
+✔ every step and action points to a source included in its answer (2.0037ms)
+✔ practical actions land on the appropriate service, not the first source (0.2915ms)
+✔ generic words and word fragments do not select unrelated guides (3.7022ms)
+✔ basic personal-data patterns are blocked without blocking ordinary questions (1.4419ms)
+✔ ships licensed fonts and icons without archived reference assets (12.9411ms)
+✔ serves existing static assets without a fallback (50.734ms)
+✔ falls back to index.html for an unknown app route (2.9225ms)
+✔ does not turn missing API or write requests into the app shell (0.9728ms)
+✔ emits the files required by Sites packaging (8.4316ms)
+✔ health selection covers every autonomous community and both autonomous cities (3.7853ms)
+✔ municipal guidance distinguishes reviewed destinations from the directory fallback (4.0217ms)
+✔ registration and replacement keep destinations distinct from certificates and first cards (0.5123ms)
+✔ territory follows the answer and is cleared by another topic or an unknown answer (39.6457ms)
+✔ a bare place answers a pending territorial question without stealing unrelated queries (4.2425ms)
+✔ places are not inferred from addresses, ambiguous names or two locations (0.6366ms)
+ℹ tests 38
+ℹ suites 0
+ℹ pass 38
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 273.3559

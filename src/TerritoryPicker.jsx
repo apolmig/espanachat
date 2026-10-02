@@ -1,16 +1,40 @@
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { ArrowUpRight } from "@phosphor-icons/react";
 import { regions } from "./territorial-services.js";
 import { isMunicipalityName } from "./territorial-context.js";
 
 export function TerritoryPicker({ kind, territory, t, busy, onChoose }) {
   const fieldId = useId();
-  const [value, setValue] = useState(
-    kind === "region" ? territory?.id || "" : territory?.label || "",
-  );
+  const selectedValue =
+    kind === "region" ? territory?.id || "" : territory?.label || "";
+  const [value, setValue] = useState(selectedValue);
   const [editing, setEditing] = useState(!territory);
   const [error, setError] = useState(false);
+  const fieldRef = useRef(null);
+  const changeRef = useRef(null);
+  const pendingFocus = useRef(null);
   const regional = kind === "region";
+  useEffect(() => {
+    if (!pendingFocus.current || busy) return;
+    const target =
+      pendingFocus.current === "field" ? fieldRef.current : changeRef.current;
+    target?.focus({ preventScroll: true });
+    pendingFocus.current = null;
+  }, [editing, busy]);
+  const startEditing = () => {
+    if (busy) return;
+    setValue(selectedValue);
+    setError(false);
+    pendingFocus.current = "field";
+    setEditing(true);
+  };
+  const cancelEditing = () => {
+    if (busy) return;
+    setValue(selectedValue);
+    setError(false);
+    pendingFocus.current = "change";
+    setEditing(false);
+  };
   if (!editing)
     return (
       <div className="territory-selection">
@@ -18,7 +42,7 @@ export function TerritoryPicker({ kind, territory, t, busy, onChoose }) {
           {t("Territorio: ", "Area: ")}
           <strong>{territory.label}</strong>
         </span>
-        <button disabled={busy} onClick={() => setEditing(true)}>
+        <button ref={changeRef} disabled={busy} onClick={startEditing}>
           {t("Cambiar", "Change")}
         </button>
       </div>
@@ -64,6 +88,7 @@ export function TerritoryPicker({ kind, territory, t, busy, onChoose }) {
       <div className="territory-fields">
         {regional ? (
           <select
+            ref={fieldRef}
             id={fieldId}
             value={value}
             onChange={(event) => setValue(event.target.value)}
@@ -81,6 +106,7 @@ export function TerritoryPicker({ kind, territory, t, busy, onChoose }) {
           </select>
         ) : (
           <input
+            ref={fieldRef}
             id={fieldId}
             value={value}
             onChange={(event) => {
@@ -118,7 +144,8 @@ export function TerritoryPicker({ kind, territory, t, busy, onChoose }) {
         <button
           type="button"
           className="text-link"
-          onClick={() => setEditing(false)}
+          disabled={busy}
+          onClick={cancelEditing}
         >
           {t("Cancelar cambio", "Cancel change")}
         </button>

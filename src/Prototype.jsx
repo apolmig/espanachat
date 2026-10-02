@@ -13,6 +13,7 @@ import {
   Trash,
   Sparkle,
   Sun,
+  LinkSimple,
 } from "@phosphor-icons/react";
 import {
   guides,
@@ -26,6 +27,8 @@ import {
 import { InfoPage } from "./InfoPage.jsx";
 import { TerritoryPicker } from "./TerritoryPicker.jsx";
 import { prepareTerritory } from "./territorial-context.js";
+import { GuideCatalog } from "./GuideCatalog.jsx";
+import { buildGuidePath, readGuideLink } from "./guide-links.js";
 
 const asset = (name) => `/assets/${name}`;
 const slides = [
@@ -293,6 +296,7 @@ function Answer({ message, t, lang, onAsk, onSources, onTerritory }) {
   const [rating, setRating] = useState(null);
   const [copied, setCopied] = useState(false);
   const [copyError, setCopyError] = useState(false);
+  const [shareStatus, setShareStatus] = useState("");
   const guide = guides.find((g) => g.id === message.guide);
   const data = getGuideContent(
     message.guide,
@@ -320,6 +324,7 @@ function Answer({ message, t, lang, onAsk, onSources, onTerritory }) {
       ]
     : guides.map((g) => (lang === "en" ? g.en.question : g.question));
   const copy = async () => {
+    setShareStatus("");
     const text = data
       ? `${data.title}\n\n${data.intro}\n\n${data.steps.map((s, i) => `${i + 1}. ${s[0]} ${s[1]}`).join("\n\n")}${data.territoryNotice ? `\n\n${data.territoryNotice}` : ""}\n\n${refs.map((k) => sources[k].url).join("\n")}`
       : t(
@@ -333,6 +338,30 @@ function Answer({ message, t, lang, onAsk, onSources, onTerritory }) {
       setTimeout(() => setCopied(false), 2000);
     } catch {
       setCopyError(true);
+    }
+  };
+  const copyGuideLink = async () => {
+    const path = buildGuidePath(guide, message.detail, lang);
+    if (!path) return;
+    setCopied(false);
+    setCopyError(false);
+    try {
+      await navigator.clipboard.writeText(
+        new URL(path, window.location.origin).href,
+      );
+      setShareStatus(
+        t(
+          "Enlace copiado. No incluye el territorio ni la conversación.",
+          "Link copied. It does not include the area or conversation.",
+        ),
+      );
+    } catch {
+      setShareStatus(
+        t(
+          "No se pudo copiar el enlace de la guía.",
+          "Could not copy the guide link.",
+        ),
+      );
     }
   };
   if (message.stopped)
@@ -459,21 +488,31 @@ function Answer({ message, t, lang, onAsk, onSources, onTerritory }) {
           >
             {copied ? <Check size={19} /> : <Copy size={19} />}
           </button>
+          {guide && (
+            <button
+              className="icon-button"
+              onClick={copyGuideLink}
+              aria-label={t("Copiar enlace de guía", "Copy guide link")}
+            >
+              <LinkSimple size={19} />
+            </button>
+          )}
         </div>
       </div>
-      {(rating || copied || copyError) && (
+      {(rating || copied || copyError || shareStatus) && (
         <small role="status" className="tool-status">
-          {copyError
-            ? t(
-                "No se pudo copiar. Selecciona el texto para copiarlo.",
-                "Could not copy. Select the text to copy it.",
-              )
-            : copied
-              ? t("Respuesta copiada.", "Answer copied.")
-              : t(
-                  "Valoración marcada solo en esta sesión.",
-                  "Rating recorded in this session only.",
-                )}
+          {shareStatus ||
+            (copyError
+              ? t(
+                  "No se pudo copiar. Selecciona el texto para copiarlo.",
+                  "Could not copy. Select the text to copy it.",
+                )
+              : copied
+                ? t("Respuesta copiada.", "Answer copied.")
+                : t(
+                    "Valoración marcada solo en esta sesión.",
+                    "Rating recorded in this session only.",
+                  ))}
         </small>
       )}
       <div className="followups">
@@ -492,11 +531,31 @@ function Answer({ message, t, lang, onAsk, onSources, onTerritory }) {
   );
 }
 
+function linkedMessages(link) {
+  if (!link) return [];
+  const content = getGuideContent(link.guide.id, link.detail, link.lang);
+  return [
+    { role: "user", text: content.question, id: crypto.randomUUID() },
+    {
+      role: "assistant",
+      guide: link.guide.id,
+      detail: link.detail,
+      territory: null,
+      id: crypto.randomUUID(),
+    },
+  ];
+}
+
 export function App() {
+  const [initialGuideLink] = useState(() =>
+    window.location.pathname.replace(/\/$/, "") === "/chat"
+      ? readGuideLink(window.location.search, guides)
+      : null,
+  );
   const [route, setRoute] = useState(
     window.location.pathname.replace(/\/$/, "") || "/",
   );
-  const [lang, setLang] = useState("es");
+  const [lang, setLang] = useState(initialGuideLink?.lang || "es");
   const t = (es, en) => (lang === "es" ? es : en);
   const [modal, setModal] = useState(null);
   const [expandedBanner, setExpandedBanner] = useState(false);
@@ -507,7 +566,9 @@ export function App() {
   const [badge, setBadge] = useState(0);
   const [flagSpin, setFlagSpin] = useState(0);
   const [fingerprint, setFingerprint] = useState(false);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState(() =>
+    linkedMessages(initialGuideLink),
+  );
   const [busy, setBusy] = useState(false);
   const [showDock, setShowDock] = useState(false);
   const [pdf, setPdf] = useState(null);
@@ -519,6 +580,15 @@ export function App() {
     const pop = () => {
       setRoute(window.location.pathname.replace(/\/$/, "") || "/");
       setModal(null);
+      if (window.location.pathname.replace(/\/$/, "") === "/chat") {
+        const linkedGuide = readGuideLink(window.location.search, guides);
+        if (linkedGuide) {
+          clearTimeout(timer.current);
+          setBusy(false);
+          setLang(linkedGuide.lang);
+          setMessages(linkedMessages(linkedGuide));
+        }
+      }
     };
     window.addEventListener("popstate", pop);
     return () => window.removeEventListener("popstate", pop);
@@ -565,7 +635,9 @@ export function App() {
       if (showAnswer && questionTrigger.current) {
         if (
           !questionTrigger.current.isConnected ||
-          questionTrigger.current.closest(".territory-picker")
+          questionTrigger.current.closest(".territory-picker") ||
+          (questionTrigger.current.closest(".followups") &&
+            document.activeElement === document.body)
         )
           target?.focus({ preventScroll: true });
         questionTrigger.current = null;
@@ -595,7 +667,10 @@ export function App() {
       { role: "user", text: query, id: crypto.randomUUID() },
     ]);
     if (route !== "/chat") nav("/chat");
-    else setModal(null);
+    else {
+      setModal(null);
+      if (window.location.search) history.replaceState({}, "", "/chat");
+    }
     setBusy(true);
     timer.current = setTimeout(() => {
       setMessages((ms) => [
@@ -643,6 +718,8 @@ export function App() {
     clearTimeout(timer.current);
     setBusy(false);
     setMessages([]);
+    if (route === "/chat" && window.location.search)
+      history.replaceState({}, "", "/chat");
     questionTrigger.current = null;
     document.getElementById("main")?.focus({ preventScroll: true });
     window.scrollTo({ top: 0, behavior: "instant" });
@@ -715,13 +792,24 @@ export function App() {
         </>,
         "brand",
       )}
-      <button
-        className="menu-button"
-        onClick={() => setModal({ type: "menu" })}
-        aria-label={t("Abrir menú", "Open menu")}
-      >
-        {t("Menú", "Menu")}
-      </button>
+      <div className="header-actions">
+        {route === "/chat" && (
+          <button
+            className="guide-trigger"
+            aria-label={t("Explorar guías", "Browse guides")}
+            onClick={() => setModal({ type: "guides" })}
+          >
+            {t("Guías", "Guides")}
+          </button>
+        )}
+        <button
+          className="menu-button"
+          onClick={() => setModal({ type: "menu" })}
+          aria-label={t("Abrir menú", "Open menu")}
+        >
+          {t("Menú", "Menu")}
+        </button>
+      </div>
     </header>
   );
   const footer = (
@@ -1334,6 +1422,7 @@ export function App() {
               howAnswers: t("Cómo se generan las guías", "How the guides work"),
               feedback: t("Comparte tu opinión", "Share your feedback"),
               pdf: t("Consultar un PDF", "Read a PDF"),
+              guides: t("Guías prácticas", "Practical guides"),
             }[modal.type]
           }
           closeLabel={t("Cerrar", "Close")}
@@ -1348,6 +1437,9 @@ export function App() {
               </div>
               <nav className="menu-nav">
                 {link("/chat", t("Haz una consulta", "Ask a question"))}
+                <button onClick={() => setModal({ type: "guides" })}>
+                  {t("Guías prácticas", "Practical guides")}
+                </button>
                 {link("/como-funciona", t("Cómo funciona", "How it works"))}
                 {link("/privacidad", t("Privacidad", "Privacy"))}
                 {link("/sobre", t("Sobre España", "About España"))}
@@ -1368,6 +1460,14 @@ export function App() {
                 )}
               </p>
             </>
+          ) : modal.type === "guides" ? (
+            <GuideCatalog
+              lang={lang}
+              t={t}
+              labels={guideLabels}
+              busy={busy}
+              onChoose={ask}
+            />
           ) : modal.type === "language" ? (
             <>
               <h2>{t("Elige tu idioma", "Choose your language")}</h2>
@@ -1387,6 +1487,20 @@ export function App() {
                     aria-pressed={lang === code}
                     onClick={() => {
                       setLang(code);
+                      const linkedGuide = readGuideLink(
+                        window.location.search,
+                        guides,
+                      );
+                      if (route === "/chat" && linkedGuide)
+                        history.replaceState(
+                          {},
+                          "",
+                          buildGuidePath(
+                            linkedGuide.guide,
+                            linkedGuide.detail,
+                            code,
+                          ),
+                        );
                       setModal(null);
                     }}
                   >
@@ -1462,8 +1576,14 @@ export function App() {
               </h2>
               <p>
                 {t(
-                  "El texto de tu consulta se compara en tu navegador con siete temas preparados: DNI, vida laboral, desempleo, Cl@ve, Carpeta Ciudadana, renta y ayudas. No hay un modelo de IA ni una búsqueda en tiempo real conectados.",
-                  "Your question is matched in your browser against seven prepared topics: ID, work history, unemployment, Cl@ve, citizen portal, income tax and grants. No AI model or real-time search is connected.",
+                  "Tu consulta se compara en este navegador con diez temas preparados: DNI, vida laboral, desempleo, Cl@ve, Carpeta Ciudadana, renta, ayudas, padrón, tarjeta sanitaria y certificado FNMT. No hay IA ni búsqueda en tiempo real conectadas.",
+                  "Your question is matched in this browser against ten prepared topics: ID, work history, unemployment, Cl@ve, citizen portal, income tax, grants, municipal registration, health cards and FNMT certificates. No AI or real-time search is connected.",
+                )}
+              </p>
+              <p>
+                {t(
+                  "Para padrón y tarjeta sanitaria puedes elegir municipio o comunidad. La selección queda solo en esta conversación y la guía general siempre está disponible.",
+                  "For municipal registration and health cards, you can choose a municipality or region. The selection stays only in this conversation, and the general guide is always available.",
                 )}
               </p>
               {link(

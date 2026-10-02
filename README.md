@@ -20,6 +20,7 @@ npm test
 
 - Portada con carrusel y controles de pausa, menú, seis páginas informativas y condiciones.
 - Chat con diez guías en español e inglés, fuentes por paso, seguimientos del mismo tema, copia y valoración local.
+- Catálogo buscable desde el chat y el menú, sin borrar la conversación. Enlace de guía o seguimiento copiable, con idioma y sin territorio ni texto de consulta.
 - Orientación territorial para padrón y tarjeta sanitaria: selector de 19 comunidades/ciudades autónomas, enlaces municipales revisados y directorio oficial para el resto. El contexto se conserva solo al seguir con el mismo trámite y desaparece al borrar o recargar.
 - Filtro básico de patrones de datos personales. No sustituye un sistema completo de protección.
 - Lectura de texto PDF en el navegador, sin subir archivos. Máximo 10 MB, 20 páginas y 30.000 caracteres. Sin OCR ni IA.

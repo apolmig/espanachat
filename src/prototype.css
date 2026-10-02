@@ -236,6 +236,24 @@ textarea {
 .send-button:hover {
   background: #003c8e;
 }
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.guide-trigger {
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid #dce3eb;
+  border-radius: 100px;
+  color: var(--navy);
+  background: white;
+  font-size: 14px;
+  line-height: 20px;
+}
+.guide-trigger:hover {
+  background: #f5f7fb;
+}
 .hero-panel {
   margin: 32px;
   position: relative;
@@ -1093,12 +1111,14 @@ textarea {
   align-items: center;
   gap: 20px;
 }
-.menu-nav a {
+.menu-nav a,
+.menu-nav button {
   font-size: 24px;
   line-height: 32px;
   letter-spacing: -0.7px;
 }
-.menu-nav a:hover {
+.menu-nav a:hover,
+.menu-nav button:hover {
   color: #0066c5;
 }
 .menu-language {
@@ -1134,6 +1154,90 @@ textarea {
   border-color: var(--navy);
   color: var(--navy);
   background: #f2f6fc;
+}
+.guide-search label {
+  display: block;
+  margin: 24px 0 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.guide-search > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid #cbd4df;
+  border-radius: 16px;
+}
+.guide-search svg {
+  flex-shrink: 0;
+  color: #667386;
+}
+.guide-search input {
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  border: 0;
+  background: transparent;
+  font-size: 16px;
+  line-height: 24px;
+}
+.dialog > .guide-result-count {
+  margin: 12px 0;
+  font-size: 12px;
+  line-height: 20px;
+}
+.guide-catalog {
+  display: grid;
+  gap: 10px;
+}
+.guide-catalog > button {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid #dce3eb;
+  border-radius: 18px;
+  text-align: left;
+}
+.guide-catalog > button:hover {
+  background: #f5f7fb;
+}
+.guide-catalog > button:disabled {
+  opacity: 0.55;
+}
+.guide-catalog strong {
+  display: block;
+  font-size: 15px;
+  line-height: 23px;
+}
+.guide-catalog > button > span > span {
+  display: block;
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 22px;
+  color: #596574;
+}
+.guide-catalog svg {
+  flex-shrink: 0;
+  color: #657286;
+}
+.guide-empty p,
+.guide-empty button {
+  font-size: 14px;
+  line-height: 22px;
+}
+.guide-empty button {
+  min-height: 44px;
+  margin-top: 8px;
+}
+.dialog > .guide-catalog-note {
+  margin: 20px 0 0;
+  font-size: 12px;
+  line-height: 19px;
 }
 .territory-picker {
   margin: 28px 0 20px;
@@ -2381,7 +2485,8 @@ textarea {
   .menu-nav {
     gap: 18px;
   }
-  .menu-nav a {
+  .menu-nav a,
+  .menu-nav button {
     font-size: 22px;
     line-height: 30px;
   }
@@ -2481,6 +2586,9 @@ textarea {
     right: 0;
     top: 0;
     padding: 20px 24px;
+  }
+  .chat-header .menu-button {
+    min-height: 44px;
   }
   .chat-page {
     padding: 105px 24px 220px;

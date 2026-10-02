@@ -1,0 +1,236 @@
+[
+  {
+    "buttonHeight": 83,
+    "dialogOverflow": false,
+    "fieldHeight": 48,
+    "heading": "Guías prácticas.",
+    "kind": "catalog-Padron",
+    "overflow": false,
+    "results": 1,
+    "width": 320
+  },
+  {
+    "buttonHeight": 83,
+    "dialogOverflow": false,
+    "fieldHeight": 48,
+    "heading": "Guías prácticas.",
+    "kind": "catalog-Padron",
+    "overflow": false,
+    "results": 1,
+    "width": 390
+  },
+  {
+    "buttonHeight": 83,
+    "dialogOverflow": false,
+    "fieldHeight": 48,
+    "heading": "Guías prácticas.",
+    "kind": "catalog-Padron",
+    "overflow": false,
+    "results": 1,
+    "width": 768
+  },
+  {
+    "buttonHeight": 83,
+    "dialogOverflow": false,
+    "fieldHeight": 48,
+    "heading": "Guías prácticas.",
+    "kind": "catalog-Padron",
+    "overflow": false,
+    "results": 1,
+    "width": 1440
+  },
+  {
+    "answers": 1,
+    "dialog": false,
+    "focus": "answer-bcdc5b1e-ff27-42a2-8065-9c582be64f83",
+    "kind": "catalog-open-guide"
+  },
+  {
+    "kind": "change-focus",
+    "tag": "INPUT",
+    "value": "Madrid"
+  },
+  {
+    "active": "Cambiar",
+    "errors": 0,
+    "kind": "cancel-focus"
+  },
+  {
+    "errors": 0,
+    "kind": "reopen-reset",
+    "tag": "INPUT",
+    "value": "Madrid"
+  },
+  {
+    "id": "answer-199747a3-1b17-468b-887e-77ee617c76dd",
+    "kind": "followup-keyboard-focus",
+    "tag": "ARTICLE",
+    "title": "Pide el documento de padrón que te soliciten."
+  },
+  {
+    "kind": "copy-guide-link",
+    "url": "http://127.0.0.1:4173/chat?guia=padron&detalle=certificate"
+  },
+  {
+    "kind": "catalog-no-results",
+    "text": "Guías prácticas.\n\nElige un trámite para continuar. Tu conversación se conserva.\n\nBuscar entre las diez guías\n\n0 guías disponibles\n\nNo encontramos una guía con esos términos. Prueba con el nombre del trámite o consulta los temas disponibles.\n\nMostrar todas las guías\n\nGuías preparadas con fuentes oficiales. Sin IA conectada."
+  },
+  {
+    "count": 10,
+    "focused": "search",
+    "kind": "catalog-recover"
+  },
+  {
+    "answers": 3,
+    "dialog": false,
+    "focus": "Explorar guías",
+    "kind": "catalog-Escape"
+  },
+  {
+    "focus": "TEXTAREA",
+    "kind": "typed-query-focus",
+    "label": "Describe lo que necesitas"
+  },
+  {
+    "answers": 1,
+    "input": "",
+    "kind": "shared-detail-general",
+    "territory": null,
+    "title": "Pide el documento de padrón que te soliciten."
+  },
+  {
+    "kind": "linked-language-update",
+    "url": "http://127.0.0.1:4173/chat?guia=sanitaria"
+  },
+  {
+    "bundle": [
+      "http://127.0.0.1:4173/assets/index-3jujgFbk.js"
+    ],
+    "kind": "linked-language-reload",
+    "lang": "es"
+  },
+  {
+    "kind": "regional-change-focus",
+    "tag": "SELECT",
+    "value": "madrid"
+  },
+  {
+    "kind": "regional-cancel-reset",
+    "tag": "SELECT",
+    "value": "madrid"
+  },
+  {
+    "kind": "clear-removes-link",
+    "url": "http://127.0.0.1:4173/chat",
+    "answers": 0
+  },
+  {
+    "controls": [
+      {
+        "height": 34,
+        "label": "España",
+        "left": 16,
+        "right": 121.71875
+      },
+      {
+        "height": 44,
+        "label": "Guides",
+        "left": 132.390625,
+        "right": 212.640625
+      },
+      {
+        "height": 44,
+        "label": "Menu",
+        "left": 220.640625,
+        "right": 294
+      }
+    ],
+    "kind": "English-chat-header",
+    "overflow": false,
+    "width": 320
+  },
+  {
+    "controls": [
+      {
+        "height": 34,
+        "label": "España",
+        "left": 24,
+        "right": 129.71875
+      },
+      {
+        "height": 44,
+        "label": "Guides",
+        "left": 194.390625,
+        "right": 274.640625
+      },
+      {
+        "height": 44,
+        "label": "Menu",
+        "left": 282.640625,
+        "right": 356
+      }
+    ],
+    "kind": "English-chat-header",
+    "overflow": false,
+    "width": 390
+  },
+  {
+    "controls": [
+      {
+        "height": 34,
+        "label": "España",
+        "left": 56,
+        "right": 167.515625
+      },
+      {
+        "height": 44,
+        "label": "Guides",
+        "left": 525.375,
+        "right": 605.625
+      },
+      {
+        "height": 48,
+        "label": "Menu",
+        "left": 613.625,
+        "right": 702
+      }
+    ],
+    "kind": "English-chat-header",
+    "overflow": false,
+    "width": 768
+  },
+  {
+    "controls": [
+      {
+        "height": 34,
+        "label": "España",
+        "left": 48,
+        "right": 159.515625
+      },
+      {
+        "height": 44,
+        "label": "Guides",
+        "left": 1205.375,
+        "right": 1285.625
+      },
+      {
+        "height": 48,
+        "label": "Menu",
+        "left": 1293.625,
+        "right": 1382
+      }
+    ],
+    "kind": "English-chat-header",
+    "overflow": false,
+    "width": 1440
+  },
+  {
+    "kind": "explanation-ten-guides",
+    "text": "Guías con fuentes, sin IA real.\n\nTu consulta se compara en este navegador con diez temas preparados: DNI, vida laboral, desempleo, Cl@ve, Carpeta Ciudadana, renta, ayudas, padrón, tarjeta sanitaria y certificado FNMT. No hay IA ni búsqueda en tiempo real conectadas.\n\nPara padrón y tarjeta sanitaria puedes elegir municipio o comunidad. La selección queda solo en esta conversación y la guía general siempre está disponible.\n\nMás sobre cómo funciona"
+  },
+  {
+    "kind": "console",
+    "main": [],
+    "links": []
+  }
+]
