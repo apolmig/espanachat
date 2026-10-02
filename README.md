@@ -25,11 +25,11 @@ npm test
 - Dictado cuando el navegador lo admite, sujeto a su proveedor y permisos.
 - Diseño responsive, navegación con teclado, diálogos nativos, foco visible y movimiento reducido.
 
-No hay IA real conectada, cuentas, base de datos, seguimiento, solicitudes administrativas ni integraciones gubernamentales. El historial y las valoraciones son efímeros. El formulario de opinión no envía datos. No se han configurado claves ni desplegado el sitio.
+No hay IA real conectada, cuentas, base de datos, seguimiento, solicitudes administrativas ni integraciones gubernamentales. El historial y las valoraciones son efímeros. El formulario de opinión no envía datos. No se necesitan claves en esta versión.
 
 ## Netlify y dominio
 
-El destino es [apolmig/espanachat](https://github.com/apolmig/espanachat), rama `main`. `netlify.toml` fija Node 24, ejecuta pruebas y build, publica `dist/client` y configura las rutas de la SPA. Ver [NETLIFY.md](NETLIFY.md) para conectar más adelante `www.espana.chat`. No se ha creado un sitio Netlify ni cambiado DNS.
+Producción: [España.chat](https://espana.chat), en el proyecto existente `espana-chat` de Netlify, conectado a [apolmig/espanachat](https://github.com/apolmig/espanachat), rama `main`. `netlify.toml` fija Node 24, ejecuta el build y las pruebas, publica `dist/client` y configura las rutas de la SPA. El dominio `www.espana.chat` redirige al dominio principal. Ver [NETLIFY.md](NETLIFY.md) para publicar y verificar una nueva versión.
 
 ## Estructura
 
@@ -44,7 +44,7 @@ El destino es [apolmig/espanachat](https://github.com/apolmig/espanachat), rama 
 | `dist/client/`      | Build estático                                                             |
 | `dist/server/`      | Adaptador de alojamiento del starter, sin API de IA                        |
 
-Para la investigación y la arquitectura propuesta, ver [docs/arquitectura.md](docs/arquitectura.md). El informe de QA está en `design-qa.md`. Revisar `ASSETS.md` antes de publicar.
+Para la investigación y la arquitectura propuesta, ver [docs/arquitectura.md](docs/arquitectura.md). El informe de QA está en `design-qa.md`. La procedencia de imágenes, fuentes e iconos está en [ASSETS.md](ASSETS.md). Las fuentes Inter y Libre Caslon Display y los iconos Phosphor se sirven con sus licencias. Los archivos de la referencia sin permisos documentados quedan fuera de la publicación.
 
 ## Identidad y enlaces compartidos
 

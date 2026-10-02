@@ -166,8 +166,8 @@ export function InfoPage({ route, t, link }) {
         </div>
         <p className="policy-date">
           {t(
-            "Versión del prototipo: 30 de septiembre de 2026.",
-            "Prototype version: 30 September 2026.",
+            "Versión del prototipo: 2 de octubre de 2026.",
+            "Prototype version: 2 October 2026.",
           )}
         </p>
       </>
@@ -388,7 +388,7 @@ export function InfoPage({ route, t, link }) {
     );
   }
   return (
-    <main id="main" className="info-page">
+    <main id="main" className="info-page" tabIndex={-1}>
       <div className="info-heading">
         <h1>{title}</h1>
         <p>{intro}</p>

@@ -14,16 +14,58 @@ import {
   Sparkle,
   Sun,
 } from "@phosphor-icons/react";
-import { guides, sources, findGuide, hasPersonalData } from "./knowledge.js";
+import {
+  guides,
+  sources,
+  findGuide,
+  resolveGuide,
+  getGuideContent,
+  formatReviewDate,
+  hasPersonalData,
+} from "./knowledge.js";
 import { InfoPage } from "./InfoPage.jsx";
 
 const asset = (name) => `/assets/${name}`;
 const slides = [
-  { photo: "spain-life.webp", guide: "dni" },
-  { photo: "family.webp", guide: "ayudas" },
-  { photo: "life.webp", guide: "vida" },
-  { photo: "outdoors.webp", guide: "paro" },
+  {
+    photo: "spain-family-v2.webp",
+    guide: "ayudas",
+    alt: ["Una familia en su nuevo piso", "A family in their new apartment"],
+  },
+  {
+    photo: "spain-life.webp",
+    guide: "dni",
+    alt: [
+      "Pareja paseando por un pueblo español",
+      "A couple walking through a Spanish town",
+    ],
+  },
+  {
+    photo: "spain-work-v2.webp",
+    guide: "vida",
+    alt: [
+      "Una mujer camino del trabajo en una calle de Madrid",
+      "A woman walking to work on a Madrid street",
+    ],
+  },
+  {
+    photo: "spain-coast-v2.webp",
+    guide: "paro",
+    alt: [
+      "Una mujer con su bicicleta en un paseo costero español",
+      "A woman with her bicycle on a Spanish coastal promenade",
+    ],
+  },
 ];
+const guideLabels = {
+  dni: ["DNI y pasaporte", "ID and passport"],
+  vida: ["Vida laboral", "Work history"],
+  paro: ["Paro y prestaciones", "Unemployment"],
+  clave: ["Cl@ve", "Cl@ve"],
+  carpeta: ["Mis trámites", "My applications"],
+  renta: ["Renta", "Tax return"],
+  ayudas: ["Ayudas y becas", "Grants and scholarships"],
+};
 function SourceIcon({ name, ...props }) {
   return (
     <img
@@ -40,7 +82,7 @@ function Flag({ className = "" }) {
   );
 }
 
-function Modal({ children, onClose, className = "", label }) {
+function Modal({ children, onClose, className = "", label, closeLabel }) {
   const ref = useRef(null);
   useEffect(() => {
     const prev = document.activeElement;
@@ -67,7 +109,7 @@ function Modal({ children, onClose, className = "", label }) {
       <button
         className="close-button icon-button"
         onClick={onClose}
-        aria-label="Cerrar / Close"
+        aria-label={closeLabel}
       >
         <X size={24} />
       </button>
@@ -180,7 +222,8 @@ function Composer({
             setError("");
           }}
           onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) send(e);
+            if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing)
+              send(e);
           }}
         />
         <div className="composer-actions">
@@ -246,8 +289,26 @@ function Answer({ message, t, lang, onAsk, onSources }) {
   const [copied, setCopied] = useState(false);
   const [copyError, setCopyError] = useState(false);
   const guide = guides.find((g) => g.id === message.guide);
-  const data = guide ? (lang === "en" ? guide.en : guide) : null;
-  const refs = guide?.refs || ["pag", "carpeta", "clave"];
+  const data = getGuideContent(message.guide, message.detail, lang);
+  const refs = data?.refs || ["pag"];
+  const actions = data?.actions || [
+    [
+      "pag",
+      "Localizar un trámite en el portal oficial",
+      "Find a procedure in the official directory",
+    ],
+  ];
+  const suggestions = guide
+    ? [
+        message.detail
+          ? lang === "en"
+            ? guide.en.question
+            : guide.question
+          : lang === "en"
+            ? guide.detail.en.question
+            : guide.detail.question,
+      ]
+    : guides.map((g) => (lang === "en" ? g.en.question : g.question));
   const copy = async () => {
     const text = data
       ? `${data.title}\n\n${data.intro}\n\n${data.steps.map((s, i) => `${i + 1}. ${s[0]} ${s[1]}`).join("\n\n")}\n\n${refs.map((k) => sources[k].url).join("\n")}`
@@ -274,7 +335,7 @@ function Answer({ message, t, lang, onAsk, onSources }) {
       </div>
     );
   return (
-    <article className="answer">
+    <article className="answer" id={`answer-${message.id}`} tabIndex={-1}>
       <div className="answer-mark">
         <Flag />
         <span>{t("Guía orientativa", "Prepared guide")}</span>
@@ -289,10 +350,16 @@ function Answer({ message, t, lang, onAsk, onSources }) {
       <p>
         {data?.intro ||
           t(
-            "Todavía no tengo una guía preparada para esa consulta. El Punto de Acceso General te ayuda a localizar el organismo y el trámite. Puedes empezar allí o elegir una de las consultas de abajo.",
-            "There is no prepared guide for this question yet. The official public service portal can help you find the responsible authority. Start there, or choose a question below.",
+            "Esta consulta queda fuera de las siete guías preparadas de esta versión. Busca el trámite y su organismo en el Punto de Acceso General, o elige uno de los temas disponibles abajo.",
+            "This question falls outside this version’s seven prepared guides. Find the procedure and its authority in the official public service directory, or choose an available topic below.",
           )}
       </p>
+      {data && (
+        <p className="answer-scope">
+          <strong>{t("Dónde se gestiona: ", "Responsible service: ")}</strong>
+          {data.scope[lang === "en" ? 1 : 0]}
+        </p>
+      )}
       {data && (
         <ol className="answer-steps">
           {data.steps.map(([title, body], i) => (
@@ -300,25 +367,44 @@ function Answer({ message, t, lang, onAsk, onSources }) {
               <span className="step-number">{i + 1}</span>
               <div>
                 <h3>{title}</h3>
-                <p>{body}</p>
+                <p>
+                  {body}{" "}
+                  {data.stepRefs[i].map((ref) => (
+                    <button
+                      key={ref}
+                      className="inline-source"
+                      aria-label={`${t("Ver fuente: ", "View source: ")}${sources[ref].name}`}
+                      onClick={() => onSources([ref])}
+                    >
+                      {refs.indexOf(ref) + 1}
+                    </button>
+                  ))}
+                </p>
               </div>
             </li>
           ))}
         </ol>
       )}
-      <a
-        className="official-link"
-        href={sources[refs[0]].url}
-        target="_blank"
-        rel="noreferrer"
-      >
-        {t("Abrir el servicio oficial", "Open the official service")}
-        <ArrowUpRight size={20} />
-      </a>
+      <div className="official-actions">
+        {actions.map(([ref, es, en]) => (
+          <a
+            key={ref}
+            className="official-link"
+            href={sources[ref].url}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {t(es, en)}
+            <ArrowUpRight size={20} />
+          </a>
+        ))}
+      </div>
       <p className="answer-note">
+        {data &&
+          `${t("Guía revisada el ", "Guide reviewed on ")}${formatReviewDate(data.reviewedAt, lang)}. `}
         {t(
-          "Revisa los requisitos vigentes en la fuente oficial. Información consultada el 30 de septiembre de 2026.",
-          "Check current requirements at the official source. Information reviewed on 30 September 2026.",
+          "Comprueba los requisitos y plazos vigentes en el organismo responsable.",
+          "Check current requirements and deadlines with the responsible authority.",
         )}
       </p>
       <div className="answer-tools">
@@ -369,15 +455,13 @@ function Answer({ message, t, lang, onAsk, onSources }) {
         </small>
       )}
       <div className="followups">
-        {(guide
-          ? guide.followups.map((q) => findGuide(q)).filter(Boolean)
-          : guides.slice(0, 3)
-        ).map((g) => (
+        {suggestions.map((question) => (
           <button
-            key={g.id}
-            onClick={() => onAsk(lang === "en" ? g.en.question : g.question)}
+            key={question}
+            disabled={message.busy}
+            onClick={() => onAsk(question)}
           >
-            {lang === "en" ? g.en.question : g.question}
+            {question}
             <ArrowUpRight size={18} />
           </button>
         ))}
@@ -408,6 +492,7 @@ export function App() {
   const [feedbackSent, setFeedbackSent] = useState(false);
   const timer = useRef(null);
   const endRef = useRef(null);
+  const questionTrigger = useRef(null);
   useEffect(() => {
     const pop = () => {
       setRoute(window.location.pathname.replace(/\/$/, "") || "/");
@@ -423,6 +508,12 @@ export function App() {
       "España · Public services, made simpler",
     );
   }, [lang]);
+  useEffect(() => {
+    const frame = requestAnimationFrame(() =>
+      document.getElementById("main")?.focus({ preventScroll: true }),
+    );
+    return () => cancelAnimationFrame(frame);
+  }, [route]);
   useEffect(() => {
     const fn = () => setShowDock(window.scrollY > 950);
     window.addEventListener("scroll", fn, { passive: true });
@@ -442,13 +533,25 @@ export function App() {
     return () => clearInterval(id);
   }, [paused, route]);
   useEffect(() => {
-    if (route === "/chat" && messages.length)
-      endRef.current?.scrollIntoView({
+    if (route === "/chat" && messages.length) {
+      const latest = messages.at(-1);
+      const showAnswer =
+        latest.role === "assistant" && !latest.stopped && !busy;
+      const target = showAnswer
+        ? document.getElementById(`answer-${latest.id}`)
+        : endRef.current;
+      if (showAnswer && questionTrigger.current) {
+        if (!questionTrigger.current.isConnected)
+          target?.focus({ preventScroll: true });
+        questionTrigger.current = null;
+      }
+      target?.scrollIntoView({
         behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
           ? "instant"
           : "smooth",
-        block: "end",
+        block: showAnswer ? "start" : "end",
       });
+    }
   }, [messages, busy, route]);
   useEffect(() => () => clearTimeout(timer.current), []);
   const nav = (path) => {
@@ -460,11 +563,12 @@ export function App() {
   };
   const ask = (query) => {
     if (busy) return;
+    questionTrigger.current = document.activeElement;
     const last = messages
       .slice()
       .reverse()
-      .find((m) => m.guide)?.guide;
-    const guide = findGuide(query, last);
+      .find((m) => m.role === "assistant" && !m.stopped)?.guide;
+    const { guide, detail } = resolveGuide(query, last);
     setMessages((ms) => [
       ...ms,
       { role: "user", text: query, id: crypto.randomUUID() },
@@ -478,6 +582,7 @@ export function App() {
         {
           role: "assistant",
           guide: guide?.id || null,
+          detail,
           id: crypto.randomUUID(),
         },
       ]);
@@ -496,6 +601,9 @@ export function App() {
     clearTimeout(timer.current);
     setBusy(false);
     setMessages([]);
+    questionTrigger.current = null;
+    document.getElementById("main")?.focus({ preventScroll: true });
+    window.scrollTo({ top: 0, behavior: "instant" });
   };
   const readPdf = async (file) => {
     setModal({ type: "pdf" });
@@ -677,7 +785,7 @@ export function App() {
       )}
       {header}
       {route === "/" ? (
-        <main id="main">
+        <main id="main" tabIndex={-1}>
           <section className="hero-panel">
             <div
               className="hero-glow"
@@ -700,10 +808,7 @@ export function App() {
                 <img
                   className="hero-image"
                   src={asset("photos/" + slides[slide].photo)}
-                  alt={t(
-                    "Personas disfrutando de la vida al aire libre",
-                    "People enjoying life outdoors",
-                  )}
+                  alt={t(...slides[slide].alt)}
                   fetchPriority="high"
                 />
                 <Composer {...composerProps} suggestion={question} />
@@ -741,6 +846,24 @@ export function App() {
                   <SourceIcon name="next" />
                 </button>
               </div>
+              <nav
+                className="popular-guides"
+                aria-label={t("Guías prácticas", "Practical guides")}
+              >
+                <p>{t("Consultas frecuentes", "Common questions")}</p>
+                <div>
+                  {guides.map((g) => (
+                    <button
+                      key={g.id}
+                      onClick={() =>
+                        ask(lang === "en" ? g.en.question : g.question)
+                      }
+                    >
+                      {t(...guideLabels[g.id])}
+                    </button>
+                  ))}
+                </div>
+              </nav>
             </div>
           </section>
           <section className="manifesto">
@@ -753,12 +876,11 @@ export function App() {
               >
                 <Flag className={flagSpin % 2 ? "flipped" : ""} />
               </button>{" "}
-              {t("lleno de posibilidades.", "full of possibilities.")}
-              <br />
+              {t("lleno de posibilidades.", "full of possibilities.")} <br />
               {t(
                 "Menos vueltas. Más respuestas.",
                 "Less searching. More answers.",
-              )}
+              )}{" "}
               <br />
               {t("Con información", "With information")}{" "}
               <button
@@ -771,8 +893,7 @@ export function App() {
               >
                 {["Cl@ve", "SEPE", "060"][badge]}
               </button>{" "}
-              {t("oficial.", "from official sources.")}
-              <br />
+              {t("oficial.", "from official sources.")} <br />
               {t("Y tu privacidad", "And your privacy")}{" "}
               <button
                 className={`inline-art fingerprint-art ${fingerprint ? "active" : ""}`}
@@ -932,23 +1053,16 @@ export function App() {
             <div className="feature-row">
               <div className="feature-art browser-art">
                 <div className="browser-dock">
-                  {["chrome", "safari", "edge"].map((b) => (
+                  {["laptop", "mobile", "browser"].map((device) => (
                     <img
-                      key={b}
-                      src={asset(
-                        "browsers/" +
-                          {
-                            chrome: "chrome.DwqVgmQL.svg",
-                            safari: "safari.DnvLTkAo.svg",
-                            edge: "edge.DBVzeOv1.svg",
-                          }[b],
-                      )}
+                      key={device}
+                      src={asset(`devices/${device}.svg`)}
                       alt={
-                        b === "chrome"
-                          ? "Chrome"
-                          : b === "safari"
-                            ? "Safari"
-                            : "Edge"
+                        {
+                          laptop: t("Ordenador", "Computer"),
+                          mobile: t("Móvil", "Phone"),
+                          browser: t("Navegador", "Browser"),
+                        }[device]
                       }
                     />
                   ))}
@@ -1009,8 +1123,11 @@ export function App() {
               </div>
               <div className="preview-card photo-preview">
                 <img
-                  src={asset("photos/family.webp")}
-                  alt={t("Una persona en la playa", "A person at the beach")}
+                  src={asset("photos/spain-family-v2.webp")}
+                  alt={t(
+                    "Una familia en su nuevo piso",
+                    "A family in their new apartment",
+                  )}
                   loading="lazy"
                 />
                 <span className="preview-label">
@@ -1049,7 +1166,27 @@ export function App() {
           {footer}
         </main>
       ) : route === "/chat" ? (
-        <main id="main" className="chat-page">
+        <main
+          id="main"
+          className="chat-page"
+          tabIndex={-1}
+          aria-label={t(
+            "Consulta de servicios públicos",
+            "Public service questions",
+          )}
+        >
+          <div
+            className="sr-only"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {!busy &&
+              messages.at(-1)?.role === "assistant" &&
+              (messages.at(-1).stopped
+                ? t("Respuesta detenida.", "Response stopped.")
+                : `${t("Respuesta disponible: ", "Answer available: ")}${getGuideContent(messages.at(-1).guide, messages.at(-1).detail, lang)?.title || t("Consulta fuera de las guías disponibles.", "Question outside the available guides.")}`)}
+          </div>
           <div className="chat-thread">
             {!messages.length && (
               <section className="chat-welcome">
@@ -1058,7 +1195,7 @@ export function App() {
                   {t("Empieza con una pregunta.", "Start with a question.")}
                 </p>
                 <div className="suggestion-grid">
-                  {guides.slice(0, 4).map((g) => (
+                  {guides.map((g) => (
                     <button
                       key={g.id}
                       onClick={() =>
@@ -1087,7 +1224,7 @@ export function App() {
               ) : (
                 <Answer
                   key={`${m.id}-${lang}`}
-                  message={m}
+                  message={{ ...m, busy }}
                   t={t}
                   lang={lang}
                   onAsk={ask}
@@ -1144,7 +1281,19 @@ export function App() {
       )}
       {modal && (
         <Modal
-          label={t("Ventana de información", "Information dialog")}
+          key={modal.type}
+          label={
+            {
+              menu: t("Menú", "Menu"),
+              language: t("Elige tu idioma", "Choose your language"),
+              sources: t("Fuentes oficiales", "Official sources"),
+              chatPrivacy: t("Tu privacidad", "Your privacy"),
+              howAnswers: t("Cómo se generan las guías", "How the guides work"),
+              feedback: t("Comparte tu opinión", "Share your feedback"),
+              pdf: t("Consultar un PDF", "Read a PDF"),
+            }[modal.type]
+          }
+          closeLabel={t("Cerrar", "Close")}
           onClose={() => setModal(null)}
           className={modal.type === "menu" ? "menu-dialog" : ""}
         >
@@ -1225,6 +1374,12 @@ export function App() {
                     <span>
                       <strong>{sources[k].name}</strong>
                       <small>{sources[k].domain}</small>
+                      {sources[k].reviewedAt && (
+                        <small>
+                          {t("Fuente revisada el ", "Source reviewed on ")}
+                          {formatReviewDate(sources[k].reviewedAt, lang)}
+                        </small>
+                      )}
                     </span>
                     <ArrowUpRight size={20} />
                   </a>
