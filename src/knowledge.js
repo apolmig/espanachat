@@ -1,4 +1,12 @@
 import { practicalSources, practicalGuides } from "./practical-guides.js";
+import {
+  identitySocialSources,
+  identitySocialGuides,
+} from "./identity-social-guides.js";
+import {
+  travelDrivingSources,
+  travelDrivingGuides,
+} from "./travel-driving-guides.js";
 import { matchGuideIntent, matchGuideDetail } from "./intent-matching.js";
 import {
   territorialSources,
@@ -9,6 +17,8 @@ import {
 
 export const sources = {
   ...practicalSources,
+  ...identitySocialSources,
+  ...travelDrivingSources,
   ...territorialSources,
   pag: {
     name: "Punto de Acceso General",
@@ -879,6 +889,8 @@ export const guides = [
     followups: [guideServices[guide.id].detail.question],
   })),
   ...practicalGuides,
+  ...travelDrivingGuides,
+  ...identitySocialGuides,
 ];
 
 const normalizeQuestion = (text) =>
@@ -962,6 +974,10 @@ export function hasPersonalData(text) {
     /\b(?:\d{8}[A-Z]|[XYZ]\d{7}[A-Z])\b/i.test(text) ||
     /[\w.+-]+@[\w.-]+\.[a-z]{2,}/i.test(text) ||
     /\b(?:ES\d{2}[\s\d]{20,30})\b/i.test(text) ||
+    // NUSS/NAF: twelve digits, compact or grouped as province / number / control.
+    /\b(?:\d{12}|\d{2}(?:\s*[/\-]\s*|\s+)\d{8}(?:\s*[/\-]\s*|\s+)\d{2})\b/.test(
+      text,
+    ) ||
     /(?:^|\s)(?:\+34[ -]?)?[6789](?:[ -]?\d){8}(?:\s|$)/.test(text)
   );
 }

@@ -29,6 +29,11 @@ import { TerritoryPicker } from "./TerritoryPicker.jsx";
 import { prepareTerritory } from "./territorial-context.js";
 import { GuideCatalog } from "./GuideCatalog.jsx";
 import { buildGuidePath, readGuideLink } from "./guide-links.js";
+import { guideLabels, frequentGuideIds } from "./guide-navigation.js";
+
+const frequentGuides = guides.filter((guide) =>
+  frequentGuideIds.includes(guide.id),
+);
 
 const asset = (name) => `/assets/${name}`;
 const slides = [
@@ -62,18 +67,6 @@ const slides = [
     ],
   },
 ];
-const guideLabels = {
-  dni: ["DNI y pasaporte", "ID and passport"],
-  vida: ["Vida laboral", "Work history"],
-  paro: ["Paro y prestaciones", "Unemployment"],
-  clave: ["Cl@ve", "Cl@ve"],
-  carpeta: ["Mis trámites", "My applications"],
-  renta: ["Renta", "Tax return"],
-  ayudas: ["Ayudas y becas", "Grants and scholarships"],
-  padron: ["Padrón", "Local register"],
-  sanitaria: ["Tarjeta sanitaria", "Health card"],
-  certificado: ["Certificado digital", "Digital certificate"],
-};
 function SourceIcon({ name, ...props }) {
   return (
     <img
@@ -152,8 +145,8 @@ function Composer({
     if (hasPersonalData(query)) {
       setError(
         t(
-          "Quita el DNI, teléfono, correo o cuenta bancaria antes de enviar.",
-          "Remove your ID, phone, email or bank details before sending.",
+          "Quita el DNI, NUSS, teléfono, correo o cuenta bancaria antes de enviar.",
+          "Remove your ID, Social Security number, phone, email or bank details before sending.",
         ),
       );
       return;
@@ -292,7 +285,15 @@ function Composer({
   );
 }
 
-function Answer({ message, t, lang, onAsk, onSources, onTerritory }) {
+function Answer({
+  message,
+  t,
+  lang,
+  onAsk,
+  onSources,
+  onTerritory,
+  onCatalog,
+}) {
   const [rating, setRating] = useState(null);
   const [copied, setCopied] = useState(false);
   const [copyError, setCopyError] = useState(false);
@@ -322,7 +323,7 @@ function Answer({ message, t, lang, onAsk, onSources, onTerritory }) {
             ? guide.detail.en.question
             : guide.detail.question,
       ]
-    : guides.map((g) => (lang === "en" ? g.en.question : g.question));
+    : [];
   const copy = async () => {
     setShareStatus("");
     const text = data
@@ -389,8 +390,8 @@ function Answer({ message, t, lang, onAsk, onSources, onTerritory }) {
       <p>
         {data?.intro ||
           t(
-            "No hemos identificado un único trámite entre las diez guías preparadas. Pregunta por un trámite cada vez, busca su organismo en el Punto de Acceso General o elige uno de los temas disponibles abajo.",
-            "We could not identify a single procedure among the ten prepared guides. Ask about one procedure at a time, find its authority in the official directory or choose an available topic below.",
+            `No hemos identificado un único trámite entre las ${guides.length} guías preparadas. Pregunta por un trámite cada vez, busca su organismo en el Punto de Acceso General o explora las guías disponibles.`,
+            `We could not identify a single procedure among the ${guides.length} prepared guides. Ask about one procedure at a time, find its authority in the official directory or browse the available guides.`,
           )}
       </p>
       {data && (
@@ -527,6 +528,19 @@ function Answer({ message, t, lang, onAsk, onSources, onTerritory }) {
           </button>
         ))}
       </div>
+      {!guide && (
+        <button
+          className="catalog-access"
+          onClick={onCatalog}
+          disabled={message.busy}
+        >
+          {t(
+            `Explorar las ${guides.length} guías`,
+            `Browse all ${guides.length} guides`,
+          )}
+          <ArrowUpRight size={18} aria-hidden="true" />
+        </button>
+      )}
     </article>
   );
 }
@@ -982,7 +996,7 @@ export function App() {
               >
                 <p>{t("Consultas frecuentes", "Common questions")}</p>
                 <div>
-                  {guides.map((g) => (
+                  {frequentGuides.map((g) => (
                     <button
                       key={g.id}
                       onClick={() =>
@@ -993,6 +1007,16 @@ export function App() {
                     </button>
                   ))}
                 </div>
+                <button
+                  className="catalog-access"
+                  onClick={() => setModal({ type: "guides" })}
+                >
+                  {t(
+                    `Ver las ${guides.length} guías`,
+                    `View all ${guides.length} guides`,
+                  )}
+                  <ArrowUpRight size={18} aria-hidden="true" />
+                </button>
               </nav>
             </div>
           </section>
@@ -1325,7 +1349,7 @@ export function App() {
                   {t("Empieza con una pregunta.", "Start with a question.")}
                 </p>
                 <div className="suggestion-grid">
-                  {guides.map((g) => (
+                  {frequentGuides.map((g) => (
                     <button
                       key={g.id}
                       onClick={() =>
@@ -1337,6 +1361,16 @@ export function App() {
                     </button>
                   ))}
                 </div>
+                <button
+                  className="catalog-access"
+                  onClick={() => setModal({ type: "guides" })}
+                >
+                  {t(
+                    `Explorar las ${guides.length} guías`,
+                    `Browse all ${guides.length} guides`,
+                  )}
+                  <ArrowUpRight size={18} aria-hidden="true" />
+                </button>
               </section>
             )}
             <div className="demo-label">
@@ -1358,6 +1392,7 @@ export function App() {
                   t={t}
                   lang={lang}
                   onAsk={ask}
+                  onCatalog={() => setModal({ type: "guides" })}
                   onTerritory={chooseTerritory}
                   onSources={(refs) => setModal({ type: "sources", refs })}
                 />
@@ -1461,13 +1496,7 @@ export function App() {
               </p>
             </>
           ) : modal.type === "guides" ? (
-            <GuideCatalog
-              lang={lang}
-              t={t}
-              labels={guideLabels}
-              busy={busy}
-              onChoose={ask}
-            />
+            <GuideCatalog lang={lang} t={t} busy={busy} onChoose={ask} />
           ) : modal.type === "language" ? (
             <>
               <h2>{t("Elige tu idioma", "Choose your language")}</h2>
@@ -1576,8 +1605,8 @@ export function App() {
               </h2>
               <p>
                 {t(
-                  "Tu consulta se compara en este navegador con diez temas preparados: DNI, vida laboral, desempleo, Cl@ve, Carpeta Ciudadana, renta, ayudas, padrón, tarjeta sanitaria y certificado FNMT. No hay IA ni búsqueda en tiempo real conectadas.",
-                  "Your question is matched in this browser against ten prepared topics: ID, work history, unemployment, Cl@ve, citizen portal, income tax, grants, municipal registration, health cards and FNMT certificates. No AI or real-time search is connected.",
+                  `Tu consulta se compara en este navegador con ${guides.length} temas preparados. Puedes explorarlos por tema en Guías prácticas. No hay IA ni búsqueda en tiempo real conectadas.`,
+                  `Your question is matched in this browser against ${guides.length} prepared topics. Browse them by topic in Practical guides. No AI or real-time search is connected.`,
                 )}
               </p>
               <p>

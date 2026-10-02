@@ -1,6 +1,7 @@
 import { useId, useRef, useState } from "react";
 import { ArrowUpRight, MagnifyingGlass } from "@phosphor-icons/react";
 import { guides } from "./knowledge.js";
+import { guideLabels, guideCategories } from "./guide-navigation.js";
 
 const searchable = (text) =>
   text
@@ -9,14 +10,20 @@ const searchable = (text) =>
     .replace(/\p{Diacritic}/gu, "")
     .replace(/cl@ve/g, "clave");
 
-export function GuideCatalog({ lang, t, labels, busy, onChoose }) {
+export function GuideCatalog({ lang, t, busy, onChoose }) {
   const [query, setQuery] = useState("");
+  const [category, setCategory] = useState("all");
   const input = useRef(null);
   const fieldId = useId();
   const terms = searchable(query.trim()).split(/\s+/).filter(Boolean);
   const available = guides.filter((guide) => {
+    const group = guideCategories.find((item) =>
+      item.guides.includes(guide.id),
+    );
+    if (category !== "all" && group?.id !== category) return false;
     const content = [
-      labels[guide.id].join(" "),
+      guideLabels[guide.id].join(" "),
+      ...(group?.label || []),
       guide.question,
       guide.en.question,
       guide.detail.question,
@@ -36,7 +43,10 @@ export function GuideCatalog({ lang, t, labels, busy, onChoose }) {
       </p>
       <div className="guide-search">
         <label htmlFor={fieldId}>
-          {t("Buscar entre las diez guías", "Search the ten guides")}
+          {t(
+            `Buscar entre las ${guides.length} guías`,
+            `Search the ${guides.length} guides`,
+          )}
         </label>
         <div>
           <MagnifyingGlass size={20} aria-hidden="true" />
@@ -54,6 +64,23 @@ export function GuideCatalog({ lang, t, labels, busy, onChoose }) {
             autoComplete="off"
           />
         </div>
+      </div>
+      <div
+        className="guide-categories"
+        role="group"
+        aria-label={t("Filtrar por tema", "Filter by topic")}
+      >
+        {[{ id: "all", label: ["Todas", "All"] }, ...guideCategories].map(
+          (item) => (
+            <button
+              key={item.id}
+              aria-pressed={category === item.id}
+              onClick={() => setCategory(item.id)}
+            >
+              {t(...item.label)}
+            </button>
+          ),
+        )}
       </div>
       <p className="guide-result-count" role="status">
         {available.length === 1
@@ -73,7 +100,7 @@ export function GuideCatalog({ lang, t, labels, busy, onChoose }) {
             }
           >
             <span>
-              <strong>{labels[guide.id][lang === "en" ? 1 : 0]}</strong>
+              <strong>{guideLabels[guide.id][lang === "en" ? 1 : 0]}</strong>
               <span>{lang === "en" ? guide.en.question : guide.question}</span>
             </span>
             <ArrowUpRight size={20} aria-hidden="true" />
@@ -92,6 +119,7 @@ export function GuideCatalog({ lang, t, labels, busy, onChoose }) {
             className="text-link"
             onClick={() => {
               setQuery("");
+              setCategory("all");
               input.current?.focus();
             }}
           >

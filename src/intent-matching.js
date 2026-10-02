@@ -15,19 +15,47 @@ const normalize = (text) =>
 
 const any = (text, patterns) => patterns.some((pattern) => pattern.test(text));
 
+const europeanCardPattern =
+  /\b(tarjetas? sanitarias? europeas?|tarjetas? sanitarias? de europa|tarjetas? europeas? de salud|european health (insurance )?cards?|ehic|tse)\b/g;
+const birthCertificatePattern =
+  /\b((certificados?|partidas?|actas?) (digital(?:es)? |electronicos? |literal(?:es)? )?(de )?nacimiento|certificaciones? (de )?nacimiento|((digital|electronic|literal) )?birth certificates?|certificates? of birth)\b/g;
+const drivingLicencePattern =
+  /\b((permiso|carnet|carne|licencia) de conducir|(driving|driver|drivers|driver s) licen[cs]es?)\b/;
+const drivingMaintenancePattern =
+  /\b(renov\w*|renuev\w*|caduc\w*|duplicados?|perdi|perdid[oa]|rob\w*|deterior\w*|reemplaz\w*|sustitu\w*|renew\w*|expir\w*|lost|stolen|damaged|broken|replace\w*|duplicat\w*)\b/;
+const unsupportedDrivingContext = [
+  /\b(puntos?|points?|adr|extranjero|foreign)\b/,
+  /\b(en el extranjero|desde el extranjero|fuera de espana|abroad|overseas)\b/,
+  /\b(en|desde|in|from) (francia|france|alemania|germany|italia|italy|portugal|reino unido|uk|united kingdom|estados unidos|usa|united states)\b/,
+  /\b(argentin[oa]?|colombian[oa]?|venezuelan|venezolan[oa]|mexican[oa]?|peruvian|peruan[oa]|ecuadorian|ecuatorian[oa]|chilean|chilen[oa]|bolivian[oa]?|brasilen[oa]|brazilian|marroqui|moroccan|frances|french|aleman|german|italian[oa]?|portugues|portuguese|britanico|british|american|estadounidense)\b/,
+];
+
 // Explicitly unsupported procedures take precedence over incidental words such
 // as "certificado", "sanitaria" or "paro". This is intentionally conservative:
 // it does not attempt to understand negation or split a compound question.
 const outsideCoverage = [
-  /\b(tarjetas? sanitarias? europeas?|tse|european health insurance cards?|ehic)\b/,
-  /\b(permiso|carnet|carne|licencia) de conducir\b/,
-  /\b(driving|driver|drivers) licen[cs]es?\b/,
+  /\b(permiso|carnet|carne|licencia) (de conducir )?internacional\b/,
+  /\binternational (driving|driver|drivers|driver s) (permits?|licen[cs]es?)\b/,
+  /\b(canjes?|canjear|intercambiar)\b.*\b(permiso|carnet|carne|licencia)\b/,
+  /\b(permiso|carnet|carne|licencia)\b.*\b(canjes?|canjear|intercambiar)\b/,
+  /\b(exchange|exchanging|convert|converting)\b.*\b(driving|driver|drivers|driver s) licen[cs]es?\b/,
+  /\b(driving|driver|drivers|driver s) licen[cs]es?\b.*\b(exchange|exchanging|convert|converting)\b/,
+  /\b(examen|examenes|pruebas? teoricas?|pruebas? practicas?|tests?|theory test)\b.*\b(conducir|driving)\b/,
+  /\b(conducir|driving)\b.*\b(examen|examenes|pruebas? teoricas?|pruebas? practicas?|tests?|theory test)\b/,
+  /\b(primer|primero|first)\b.*\b((permiso|carnet|carne|licencia) de conducir|(driving|driver|drivers|driver s) licen[cs]es?)\b/,
   /\b(permiso|tarjeta|autorizacion) de residencia\b/,
   /\b(residence permits?|residency permits?|immigration|extranjeria)\b/,
   /\b(nie|tie)\b.*\b(renov\w*|renuev\w*|solicit\w*|pedir|obten\w*|sacar)\b/,
   /\b(renov\w*|renuev\w*|solicit\w*|pedir|obten\w*|sacar)\b.*\b(nie|tie)\b/,
-  /\b(certificados?|certificacion) (de )?(nacimiento|matrimonio|defuncion|antecedentes|empresa|representante)\b/,
-  /\b(birth|marriage|death|company|criminal record) certificates?\b/,
+  /\b(certificados?|certificacion) (de )?(matrimonio|defuncion|antecedentes|empresa|representante)\b/,
+  /\b(marriage|death|company|criminal record) certificates?\b/,
+  /\b(inscrib\w*|registrar|inscripcion)\b.*\b(nacimiento|recien nacido|bebe)\b/,
+  /\b(register|registering|registration)\b.*\b(newborn|new born|birth)\b/,
+  /\b(certificados?|certificacion|partidas?|actas?) (de )?nacimiento\b.*\b(extranjero|extranjera|nacido fuera de espana|naci fuera de espana)\b/,
+  /\b(foreign|overseas) birth certificates?\b/,
+  /\bbirth certificates?\b.*\b(foreign|overseas|issued abroad|born abroad)\b/,
+  /\b(dar de alta|dar (a |de )?alta|afiliar)\b.*\b(trabajador(?:es)?|empleados?)\b/,
+  /\b(register|registering|enrol|enroll|enrolment|enrollment)\b.*\b(employees?|workers?)\b/,
   /\b(certificados?|certificates?)\b.*\b(representantes?|representatives?)\b/,
   /\bcertificados? (digital(?:es)? |electronicos? )?(de |del )?dni(e| electronico)?\b/,
   /\bdnie (digital |electronic )?certificates?\b/,
@@ -39,7 +67,7 @@ const outsideCoverage = [
   /\bclave (de )?((mi|la|el) )?(wifi|wi fi|banco|banca|correo|email)\b/,
 ];
 
-// These anchors describe the ten supported topics. Generic words such as
+// These anchors describe the supported topics. Generic words such as
 // "ayuda", "estado", "identidad", "firma", "tarjeta" and "certificado" are
 // insufficient. Every expression uses complete word boundaries, so "renta"
 // cannot match "cuarenta" and "clave" cannot match "enclave".
@@ -111,6 +139,30 @@ const topicPatterns = {
     /\b(certificados?|certificates?)\b.*\b(firma (electronica|digital)|digital signature|electronic signature)\b/,
     /\b(firma (electronica|digital)|digital signature|electronic signature)\b.*\b(certificados?|certificates?)\b/,
   ],
+  tse: [
+    new RegExp(europeanCardPattern.source),
+    /\b(certificado provisional sustitutorio|provisional replacement certificate)\b/,
+  ],
+  conducir: [drivingLicencePattern],
+  nacimiento: [new RegExp(birthCertificatePattern.source)],
+  nuss: [
+    /\b(nuss|naf)\b/,
+    /\b(numero (de (la )?)?(seguridad social|afiliacion)|social security (affiliation )?number|national insurance number in spain)\b/,
+  ],
+};
+
+// A European health card contains the regional card's words, and a digitally
+// issued birth certificate is not an FNMT credential. Remove only the complete
+// specialised phrase so an additional, distinct request still causes abstention.
+const topicQuery = (query, id) => {
+  if (id === "sanitaria") return query.replace(europeanCardPattern, " ");
+  if (id === "certificado") return query.replace(birthCertificatePattern, " ");
+  return query;
+};
+
+const matchesTopic = (query, id) => {
+  if (id === "conducir" && !drivingMaintenancePattern.test(query)) return false;
+  return any(topicQuery(query, id), topicPatterns[id] ?? []);
 };
 
 // Credentials named only as a means of accessing another procedure are not a
@@ -118,10 +170,10 @@ const topicPatterns = {
 // credential request still counts, e.g. "padrón con Cl@ve y registrar Cl@ve".
 const accessMethodPatterns = {
   clave:
-    /\b(con|mediante|usando|with|using|via|through) (mi |my |a |el |la )?clave( pin| permanente| movil)?\b/g,
+    /\b(con|mediante|usando|sin|with|using|via|through|without|no tengo|i don t have|i have no) (mi |my |a |el |la )?clave( pin| permanente| movil)?\b/g,
   certificado:
-    /\b(con|mediante|usando|with|using|via|through) (mi |my |a |el |un )?(certificado (digital|electronico|de firma (digital|electronica))|digital certificate|electronic certificate|digital signature certificate|electronic signature certificate|fnmt)\b/g,
-  dni: /\b(con|mediante|usando|with|using|via|through) (mi |my |a |el )?(dni|dnie|spanish id)\b/g,
+    /\b(con|mediante|usando|sin|with|using|via|through|without|no tengo|i don t have|i have no) (mi |my |a |an |the |el |un )?(certificado (digital|electronico|de firma (digital|electronica))|digital certificate|electronic certificate|digital signature certificate|electronic signature certificate|fnmt)\b/g,
+  dni: /\b(con|mediante|usando|sin|with|using|via|through|without|no tengo|i don t have|i have no) (mi |my |a |el )?(dni|dnie|spanish id)\b/g,
 };
 
 /**
@@ -144,13 +196,18 @@ export function matchGuideIntent(text, guides) {
   );
   if (exact) return exact;
   if (any(query, outsideCoverage)) return null;
+  if (
+    drivingLicencePattern.test(query) &&
+    any(query, unsupportedDrivingContext)
+  )
+    return null;
 
   const matchingIds = new Set();
   for (const guide of available) {
-    const patterns = topicPatterns[guide.id];
-    if (!patterns) continue;
+    if (!topicPatterns[guide.id]) continue;
     const explicitClave = guide.id === "clave" && /cl@ve/i.test(text);
-    if (explicitClave || any(query, patterns)) matchingIds.add(guide.id);
+    if (explicitClave || matchesTopic(query, guide.id))
+      matchingIds.add(guide.id);
   }
   // A bare "renta" or "clave" cannot select a guide on its own, but it must
   // not disappear when another topic is present: "renta y certificado digital"
@@ -169,7 +226,7 @@ export function matchGuideIntent(text, guides) {
     for (const [id, pattern] of Object.entries(accessMethodPatterns)) {
       if (!matchingIds.has(id)) continue;
       const withoutMethod = query.replace(pattern, " ");
-      if (withoutMethod !== query && !any(withoutMethod, topicPatterns[id])) {
+      if (withoutMethod !== query && !matchesTopic(withoutMethod, id)) {
         // Plain "clave" after a method phrase still needs to count if another
         // explicit Cl@ve occurrence was left in the query.
         if (id !== "clave" || !/\bclave\b/.test(withoutMethod))
@@ -208,6 +265,38 @@ const detailRules = {
       /\b(certificados?|volantes?|justificantes?) (de |del |de mi )?(padron|empadronamiento)\b/,
       /\b(certificados?|volantes?|justificantes?) de inscripcion en (el )?padron\b/,
       /\b(municipal (residence|residency|registration) certificates?|certificates? of municipal (residence|residency|registration)|proof of municipal (residence|residency|registration))\b/,
+    ],
+  },
+  tse: {
+    id: "provisional",
+    patterns: [
+      /\b(cps|certificado provisional sustitutorio|provisional replacement certificate)\b/,
+      /\b(certificado provisional|provisional certificate)\b/,
+    ],
+  },
+  conducir: {
+    id: "duplicate",
+    patterns: [
+      /\b(duplicados?|perdi|perdid[oa]|rob\w*|deterior\w*|reemplaz\w*|sustitu\w*)\b/,
+      /\b(lost|stolen|theft|damaged|broken|replace\w*|duplicat\w*)\b/,
+    ],
+    exclusions: [/\b(caduc\w*|expir\w*|renov\w*|renuev\w*|renew\w*)\b/],
+  },
+  nacimiento: {
+    id: "without-id",
+    patterns: [
+      /\bsin (identificacion electronica|certificado digital|certificado electronico|clave|dni electronico|dnie)\b/,
+      /\bno (tengo|dispongo de) (identificacion electronica|certificado digital|certificado electronico|clave|dni electronico|dnie)\b/,
+      /\b(without|no) (an? |my |the )?(electronic id|electronic identification|digital id|digital identification|digital certificate|electronic certificate|clave)\b/,
+      /\bi (don t have|have no) (a |my )?(electronic id|electronic identification|digital id|digital identification|digital certificate|electronic certificate|clave)\b/,
+      /\b(por correo|por via postal|by post|postal application)\b/,
+    ],
+  },
+  nuss: {
+    id: "consult",
+    patterns: [
+      /\b(consult\w*|acreditar|acreditacion|ver|veo|comprobar|comprobarlo|averiguar|saber|donde esta|donde encuentro|cual es|ya tengo)\b/,
+      /\b(check|find|view|prove|proof|existing|already have|what is|where is)\b/,
     ],
   },
 };

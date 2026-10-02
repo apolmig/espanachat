@@ -51,6 +51,26 @@ const questions = [
     "¿Cómo obtengo un certificado digital?",
     "How do I get a digital certificate?",
   ],
+  [
+    "tse",
+    "¿Cómo solicito la Tarjeta Sanitaria Europea?",
+    "How do I apply for a European Health Insurance Card?",
+  ],
+  [
+    "conducir",
+    "¿Cómo renuevo mi permiso de conducir?",
+    "How do I renew my driving licence?",
+  ],
+  [
+    "nacimiento",
+    "¿Cómo pido un certificado de nacimiento?",
+    "How do I request a birth certificate?",
+  ],
+  [
+    "nuss",
+    "¿Cómo solicito mi número de la Seguridad Social?",
+    "How do I apply for a Social Security number?",
+  ],
 ];
 const guides = Object.freeze(
   questions.map(([id, question, en]) =>
@@ -131,6 +151,33 @@ test("common Spanish and English requests select a single useful guide", () => {
     ["Necesito renovar mi certificado electrónico", "certificado"],
     ["How can I get an electronic certificate?", "certificado"],
     ["I need a digital certificate", "certificado"],
+    ["Necesito tarjeta sanitaria europea", "tse"],
+    ["Solicitar TSE", "tse"],
+    ["European health insurance card", "tse"],
+    ["How do I renew my EHIC?", "tse"],
+    ["I need a European health card", "tse"],
+    ["Solicitar tarjeta europea de salud", "tse"],
+    ["Las tarjetas sanitarias europeas de mi familia", "tse"],
+    ["Pedir un certificado provisional sustitutorio", "tse"],
+    ["I need a provisional replacement certificate", "tse"],
+    ["I need to renew my driving licence", "conducir"],
+    ["Renovar el carnet de conducir", "conducir"],
+    ["Me caduca el carné de conducir", "conducir"],
+    ["Mi permiso de conducir está deteriorado", "conducir"],
+    ["I lost my driver's license", "conducir"],
+    ["Dónde obtengo mi certificado de nacimiento", "nacimiento"],
+    ["How do I request a birth certificate?", "nacimiento"],
+    ["Necesito un certificado literal de nacimiento", "nacimiento"],
+    ["Certificado electrónico de nacimiento", "nacimiento"],
+    ["A digital birth certificate", "nacimiento"],
+    ["¿Cómo pido mi partida de nacimiento con DNI?", "nacimiento"],
+    ["Necesito mi partida de nacimiento con certificado digital", "nacimiento"],
+    ["Solicitar mi NUSS", "nuss"],
+    ["¿Cuál es mi NAF?", "nuss"],
+    ["Pedir un número de afiliación", "nuss"],
+    ["Necesito el número de la Seguridad Social para trabajar", "nuss"],
+    ["How can I get a Spanish Social Security number?", "nuss"],
+    ["Where do I find my Social Security affiliation number?", "nuss"],
   ];
   for (const [query, id] of corpus) {
     assert.equal(matchGuideIntent(query, guides)?.id, id, query);
@@ -152,20 +199,43 @@ test("ambiguous words, fragments and unsupported procedures do not produce a gue
     "Sanitarios y certificaciones varias",
     "Tengo cotizaciones de un presupuesto",
     "What is the weather today?",
-    "I need to renew my driving licence",
-    "Renovar el carnet de conducir",
-    "Necesito tarjeta sanitaria europea",
-    "Solicitar TSE",
-    "European health insurance card",
-    "How do I renew my EHIC?",
+    "Quiero sacar mi primer carnet de conducir",
+    "How do I get my first driving licence?",
+    "Canjear un permiso de conducir extranjero",
+    "Renew and exchange my foreign driving licence",
+    "Necesito el permiso internacional de conducir",
+    "How do I obtain an international driving permit?",
+    "Renovar permiso de conducir y hacer el examen",
+    "Book my driving test",
+    "Certificado de nacimiento para canjear el permiso de conducir",
+    "He perdido todos los puntos de mi carnet de conducir",
+    "My driving licence points have expired",
+    "¿Cómo renuevo mi permiso de conducir ADR?",
+    "Renovar permiso de conducir extranjero",
+    "Renovar mi carnet de conducir español en el extranjero",
+    "Renovar mi permiso de conducir español en Francia",
+    "I need to renew my Spanish driving licence abroad",
+    "¿Cómo renuevo mi carnet de conducir argentino?",
+    "Renew my Colombian driving licence",
+    "Certificado de nacimiento para inscribir a mi recién nacido",
+    "Inscripción de nacimiento en el registro civil y certificado",
+    "Register my newborn and request a birth certificate",
+    "Renovar un certificado de nacimiento extranjero",
+    "How can I get a foreign birth certificate?",
+    "¿Cómo inscribo el nacimiento con certificado digital?",
+    "Quiero dar de alta a un trabajador con su NUSS",
+    "Register an employee with a Social Security number",
+    "Permiso de conducir",
+    "Driving licence",
+    "Certificado provisional",
+    "CPS",
+    "Número, por favor",
     "Renovar mi permiso de residencia",
     "How to obtain a residence permit",
     "Quiero sacar el NIE",
     "Renovar TIE",
-    "Dónde obtengo mi certificado de nacimiento",
     "Necesito un certificado de empresa para pedir el paro",
     "Obtener certificado de matrimonio",
-    "How do I request a birth certificate?",
     "Company certificate",
     "Certificado FNMT de representante",
     "Quiero un diagnóstico y tarjeta sanitaria",
@@ -205,6 +275,17 @@ test("two distinct requested topics abstain, while ID and passport remain one fa
     "Quiero el padrón con certificado digital y renovar certificado digital",
     "Padrón con Cl@ve y registrarme en Cl@ve",
     "Necesito DNI y tarjeta sanitaria",
+    "Tarjeta sanitaria y TSE",
+    "Tarjeta sanitaria europea y tarjeta sanitaria regional",
+    "European health insurance card and my regional health card",
+    "Renovar mi permiso de conducir y mi DNI",
+    "Duplicado del carnet de conducir y vida laboral",
+    "Certificado de nacimiento y certificado digital",
+    "Get an FNMT certificate and a birth certificate",
+    "Consultar NUSS y descargar vida laboral",
+    "Social Security number and unemployment benefits",
+    "Tarjeta sanitaria europea con certificado digital y renovar certificado digital",
+    "Certificado de nacimiento sin Cl@ve y darme de alta en Cl@ve",
   ]) {
     assert.equal(matchGuideIntent(query, guides), null, query);
   }
@@ -221,6 +302,14 @@ test("identification named only as a method does not absorb the requested proced
     ["Presentar la renta mediante Clave PIN", "renta"],
     ["Download my work history using my digital certificate", "vida"],
     ["Consultar Mi Carpeta Ciudadana con DNI", "carpeta"],
+    ["Solicitar TSE mediante Cl@ve", "tse"],
+    ["Certificado de nacimiento con mi certificado digital", "nacimiento"],
+    ["Certificado de nacimiento sin certificado digital", "nacimiento"],
+    ["Certificado de nacimiento pero no tengo Cl@ve", "nacimiento"],
+    ["Birth certificate without an electronic certificate", "nacimiento"],
+    ["Birth certificate, I don't have a digital certificate", "nacimiento"],
+    ["Consultar el NUSS usando DNI", "nuss"],
+    ["Check my Social Security number with Clave", "nuss"],
   ]) {
     assert.equal(matchGuideIntent(query, guides)?.id, id, query);
   }
@@ -255,6 +344,10 @@ const detailGuides = Object.freeze(
       ["certificado", "renewal"],
       ["sanitaria", "replacement"],
       ["padron", "certificate"],
+      ["tse", "provisional"],
+      ["conducir", "duplicate"],
+      ["nacimiento", "without-id"],
+      ["nuss", "consult"],
     ].map(([id, detail]) => [
       id,
       Object.freeze({ id, detail: Object.freeze({ id: detail }) }),
@@ -382,6 +475,130 @@ test("municipal certificates and registration slips open proof of registration, 
   }
 });
 
+test("European card and regional health card queries stay in their own procedure", () => {
+  for (const query of [
+    "Renovar mi tarjeta sanitaria europea",
+    "My EHIC has expired",
+    "He perdido las tarjetas sanitarias europeas",
+  ]) {
+    // Repeat the free-form query to catch accidental stateful regular expressions.
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      assert.equal(matchGuideIntent(query, guides)?.id, "tse", query);
+      assert.equal(
+        matchGuideDetail(query, detailGuides.sanitaria),
+        null,
+        query,
+      );
+      assert.equal(matchGuideDetail(query, detailGuides.tse), null, query);
+    }
+  }
+  for (const query of [
+    "Necesito un certificado provisional sustitutorio",
+    "No me llega la TSE y necesito un CPS",
+    "Certificado provisional para la tarjeta sanitaria europea",
+    "How do I get a provisional replacement certificate?",
+    "I need a provisional certificate instead of my EHIC",
+  ]) {
+    assert.equal(matchGuideIntent(query, guides)?.id, "tse", query);
+    assert.equal(
+      matchGuideDetail(query, detailGuides.tse),
+      "provisional",
+      query,
+    );
+    assert.equal(matchGuideDetail(query, detailGuides.sanitaria), null, query);
+  }
+});
+
+test("driving licence renewal stays separate from replacement and unsupported driving procedures", () => {
+  for (const query of [
+    "He perdido mi carnet de conducir",
+    "Me robaron el permiso de conducir",
+    "Necesito un duplicado de la licencia de conducir",
+    "Replace my damaged driving licence",
+    "My driver's license was stolen",
+  ]) {
+    assert.equal(matchGuideIntent(query, guides)?.id, "conducir", query);
+    assert.equal(
+      matchGuideDetail(query, detailGuides.conducir),
+      "duplicate",
+      query,
+    );
+  }
+  for (const query of [
+    "Renovar mi permiso de conducir",
+    "El carnet de conducir está caducado",
+    "He perdido el permiso de conducir y además está caducado",
+    "My damaged driving licence has expired",
+    "Necesito un duplicado",
+    "Obtener mi primer permiso de conducir",
+    "Renew my international driving permit",
+    "He perdido todos los puntos de mi carnet de conducir",
+    "¿Cómo renuevo mi permiso de conducir ADR?",
+  ]) {
+    assert.equal(matchGuideDetail(query, detailGuides.conducir), null, query);
+  }
+});
+
+test("birth certificates offer the no-electronic-ID route without absorbing the FNMT topic", () => {
+  for (const query of [
+    "Pedir certificado de nacimiento sin identificación electrónica",
+    "Certificado de nacimiento sin certificado digital",
+    "Necesito un certificado de nacimiento pero no tengo Cl@ve",
+    "Pedir un certificado literal de nacimiento por correo",
+    "Birth certificate without an electronic ID",
+    "Birth certificate, I don't have a digital certificate",
+  ]) {
+    assert.equal(matchGuideIntent(query, guides)?.id, "nacimiento", query);
+    assert.equal(
+      matchGuideDetail(query, detailGuides.nacimiento),
+      "without-id",
+      query,
+    );
+    assert.equal(
+      matchGuideDetail(query, detailGuides.certificado),
+      null,
+      query,
+    );
+  }
+  for (const query of [
+    "Pedir certificado de nacimiento",
+    "Certificado electrónico de nacimiento",
+    "I need a digital birth certificate",
+    "Birth certificate with my digital certificate",
+    "¿Dónde puedo pedir mi certificado de nacimiento presencialmente?",
+    "Request my birth certificate in person",
+    "Sin identificación electrónica",
+    "Obtener certificado de matrimonio sin Cl@ve",
+    "Certificado de nacimiento y renovar mi certificado digital",
+  ]) {
+    assert.equal(matchGuideDetail(query, detailGuides.nacimiento), null, query);
+  }
+});
+
+test("Social Security number lookup opens an existing-number guide and does not become work history", () => {
+  for (const query of [
+    "¿Cuál es mi número de la Seguridad Social?",
+    "Quiero consultar mi NUSS",
+    "Descargar la acreditación de mi NAF",
+    "Ya tengo número de afiliación pero no lo encuentro",
+    "Where can I find my Social Security number?",
+    "Check my existing Social Security number with Cl@ve",
+  ]) {
+    assert.equal(matchGuideIntent(query, guides)?.id, "nuss", query);
+    assert.equal(matchGuideDetail(query, detailGuides.nuss), "consult", query);
+  }
+  for (const query of [
+    "Solicitar un NUSS por primera vez",
+    "Necesito un número de la Seguridad Social para empezar a trabajar",
+    "How do I apply for a Social Security number?",
+    "Quiero consultar mi vida laboral",
+    "Consultar NUSS y vida laboral",
+    "¿Cuál es mi número?",
+  ]) {
+    assert.equal(matchGuideDetail(query, detailGuides.nuss), null, query);
+  }
+});
+
 test("detail matching is pure, rejects mixed families, and requires the correct supported detail", () => {
   const before = JSON.stringify(detailGuides);
   for (const query of [
@@ -394,6 +611,9 @@ test("detail matching is pure, rejects mixed families, and requires the correct 
     "He perdido las tarjetas sanitarias europeas",
     "Renuevo mi NIE y necesito un certificado de empadronamiento",
     "Renovar certificado digital del DNIe",
+    "Certificado provisional sustitutorio y duplicado de tarjeta sanitaria",
+    "Birth certificate without digital ID and renew my passport",
+    "Check NUSS and replace my driving licence",
   ]) {
     for (const guide of Object.values(detailGuides)) {
       assert.equal(matchGuideDetail(query, guide), null, query);

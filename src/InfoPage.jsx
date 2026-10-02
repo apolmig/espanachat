@@ -10,7 +10,7 @@ import {
   Buildings,
   Sparkle,
 } from "@phosphor-icons/react";
-import { sources } from "./knowledge.js";
+import { sources, guides } from "./knowledge.js";
 
 export function InfoPage({ route, t, link }) {
   const card = (Icon, title, body) => (
@@ -60,8 +60,8 @@ export function InfoPage({ route, t, link }) {
             MagnifyingGlass,
             t("Encuentra una guía.", "Find a guide."),
             t(
-              "Esta versión reconoce consultas sobre diez temas preparados. No hay IA ni búsqueda en internet conectadas. Si no hay una guía, te indicamos dónde buscar.",
-              "This version matches questions about ten prepared topics. No AI or internet search is connected. If a guide is unavailable, we suggest where to look.",
+              `Esta versión reconoce consultas sobre ${guides.length} temas preparados. No hay IA ni búsqueda en internet conectadas. Si no hay una guía, te indicamos dónde buscar.`,
+              `This version matches questions about ${guides.length} prepared topics. No AI or internet search is connected. If a guide is unavailable, we suggest where to look.`,
             ),
           )}
           {card(
@@ -198,8 +198,8 @@ export function InfoPage({ route, t, link }) {
           </p>
           <p>
             {t(
-              "Esta versión incluye diez guías revisadas con fuentes oficiales, un lector local de PDF y una interfaz accesible desde móvil y ordenador. Conectar un asistente real requerirá una base documental actualizada, controles de seguridad y evaluación de respuestas.",
-              "This version includes ten guides based on official sources, a local PDF reader and a mobile-friendly interface. A live assistant will require an updated document index, security controls and answer evaluation.",
+              `Esta versión incluye ${guides.length} guías revisadas con fuentes oficiales, un lector local de PDF y una interfaz accesible desde móvil y ordenador. Conectar un asistente real requerirá una base documental actualizada, controles de seguridad y evaluación de respuestas.`,
+              `This version includes ${guides.length} guides based on official sources, a local PDF reader and a mobile-friendly interface. A live assistant will require an updated document index, security controls and answer evaluation.`,
             )}
           </p>
           {link(
@@ -292,8 +292,8 @@ export function InfoPage({ route, t, link }) {
       [
         t("¿Hay una IA conectada?", "Is a live AI connected?"),
         t(
-          "No. El texto se compara con diez temas preparados. Las guías se cargan localmente, con enlaces para comprobar la información. No se realiza una búsqueda en tiempo real.",
-          "No. Questions are matched against ten prepared topics. Guides load locally with source links. No real-time search takes place.",
+          `No. El texto se compara con ${guides.length} temas preparados. Las guías se cargan localmente, con enlaces para comprobar la información. No se realiza una búsqueda en tiempo real.`,
+          `No. Questions are matched against ${guides.length} prepared topics. Guides load locally with source links. No real-time search takes place.`,
         ),
       ],
       [

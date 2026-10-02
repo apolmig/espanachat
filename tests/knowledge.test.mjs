@@ -105,7 +105,7 @@ test("practical actions land on the appropriate service, not the first source", 
 });
 test("generic words and word fragments do not select unrelated guides", () => {
   for (const query of [
-    "I need to renew my driving licence",
+    "I need to exchange my driving licence",
     "Necesito ayuda",
     "Vivo en un enclave de cuarenta habitantes",
   ])
@@ -127,6 +127,37 @@ test("generic words and word fragments do not select unrelated guides", () => {
     "certificado",
   );
 });
+test("expanded national procedures resolve to the right guide and useful follow-up", () => {
+  for (const [query, id, detail] of [
+    ["Renovar mi tarjeta sanitaria europea", "tse", null],
+    ["No me llega la TSE y necesito un CPS", "tse", "provisional"],
+    ["I need to renew my driving licence", "conducir", null],
+    ["He perdido el permiso de conducir", "conducir", "duplicate"],
+    ["Certificado electrónico de nacimiento", "nacimiento", null],
+    [
+      "Birth certificate without a digital certificate",
+      "nacimiento",
+      "without-id",
+    ],
+    ["Solicitar NUSS por primera vez", "nuss", null],
+    ["¿Cuál es mi número de la Seguridad Social?", "nuss", "consult"],
+  ]) {
+    const result = resolveGuide(query);
+    assert.equal(result.guide?.id, id, query);
+    assert.equal(result.detail, detail, query);
+    assert.equal(getGuideContent(id, detail).guideId, id, query);
+  }
+  for (const query of [
+    "Tarjeta sanitaria europea y tarjeta sanitaria regional",
+    "Certificado de nacimiento y certificado digital",
+    "Consultar NUSS y vida laboral",
+    "Renovar el DNI y el permiso de conducir",
+    "Primer permiso de conducir",
+    "Certificado de matrimonio sin Cl@ve",
+  ]) {
+    assert.equal(resolveGuide(query, "dni").guide, null, query);
+  }
+});
 test("basic personal-data patterns are blocked without blocking ordinary questions", () => {
   for (const text of [
     "DNI 00000000T",
@@ -134,7 +165,19 @@ test("basic personal-data patterns are blocked without blocking ordinary questio
     "demo@example.test",
     "ES00 0000 0000 0000 0000 0000",
     "Tel 600 000 000",
+    "NUSS 281234567890",
+    "NAF 28/12345678/90",
+    "NUSS 28 / 12345678 / 90",
   ])
     assert.equal(hasPersonalData(text), true, text);
-  for (const g of guides) assert.equal(hasPersonalData(g.question), false);
+  for (const g of guides) {
+    for (const question of [
+      g.question,
+      g.en.question,
+      g.detail.question,
+      g.detail.en.question,
+    ]) {
+      assert.equal(hasPersonalData(question), false, question);
+    }
+  }
 });

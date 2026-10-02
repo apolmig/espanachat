@@ -1,0 +1,253 @@
+{
+  "catalogDevices": [
+    {
+      "composerButtons": [44, 44, 44],
+      "dialogWidth": 272,
+      "filters": [
+        {
+          "height": 44,
+          "width": 67.296875
+        },
+        {
+          "height": 44,
+          "width": 107.734375
+        },
+        {
+          "height": 44,
+          "width": 135.03125
+        },
+        {
+          "height": 44,
+          "width": 64.4375
+        },
+        {
+          "height": 44,
+          "width": 104.109375
+        },
+        {
+          "height": 44,
+          "width": 138.046875
+        },
+        {
+          "height": 44,
+          "width": 93.75
+        }
+      ],
+      "results": 2,
+      "scrollWidth": 320,
+      "width": 320
+    },
+    {
+      "composerButtons": [44, 44, 44],
+      "dialogWidth": 342,
+      "filters": [
+        {
+          "height": 44,
+          "width": 67.296875
+        },
+        {
+          "height": 44,
+          "width": 107.734375
+        },
+        {
+          "height": 44,
+          "width": 135.03125
+        },
+        {
+          "height": 44,
+          "width": 64.4375
+        },
+        {
+          "height": 44,
+          "width": 104.109375
+        },
+        {
+          "height": 44,
+          "width": 138.046875
+        },
+        {
+          "height": 44,
+          "width": 93.75
+        }
+      ],
+      "results": 2,
+      "scrollWidth": 380,
+      "width": 390
+    },
+    {
+      "composerButtons": [44, 44, 48],
+      "dialogWidth": 500,
+      "filters": [
+        {
+          "height": 44,
+          "width": 67.296875
+        },
+        {
+          "height": 44,
+          "width": 107.734375
+        },
+        {
+          "height": 44,
+          "width": 135.03125
+        },
+        {
+          "height": 44,
+          "width": 64.4375
+        },
+        {
+          "height": 44,
+          "width": 104.109375
+        },
+        {
+          "height": 44,
+          "width": 138.046875
+        },
+        {
+          "height": 44,
+          "width": 93.75
+        }
+      ],
+      "results": 2,
+      "scrollWidth": 768,
+      "width": 768
+    },
+    {
+      "composerButtons": [44, 44, 48],
+      "dialogWidth": 500,
+      "filters": [
+        {
+          "height": 44,
+          "width": 67.296875
+        },
+        {
+          "height": 44,
+          "width": 107.734375
+        },
+        {
+          "height": 44,
+          "width": 135.03125
+        },
+        {
+          "height": 44,
+          "width": 64.4375
+        },
+        {
+          "height": 44,
+          "width": 104.109375
+        },
+        {
+          "height": 44,
+          "width": 138.046875
+        },
+        {
+          "height": 44,
+          "width": 93.75
+        }
+      ],
+      "results": 2,
+      "scrollWidth": 1430,
+      "width": 1440
+    }
+  ],
+  "queryChecks": [
+    {
+      "focus": "BUTTON",
+      "question": "¿Cómo pido mi partida de nacimiento con DNI?",
+      "title": "Solicita tu certificado en el Registro Civil."
+    },
+    {
+      "focus": "BUTTON",
+      "question": "Necesito acreditar mi NUSS",
+      "title": "Consulta y descarga la acreditación de tu NUSS."
+    },
+    {
+      "focus": "BUTTON",
+      "question": "I need a European health card",
+      "title": "Prepara la tarjeta sanitaria para tu viaje por Europa."
+    },
+    {
+      "focus": "BUTTON",
+      "question": "Necesito NUSS y vida laboral",
+      "title": "Busquemos el servicio adecuado."
+    }
+  ],
+  "manual": {
+    "catalogCounts": {
+      "all": 14,
+      "documents": 3,
+      "work": 4,
+      "health": 2,
+      "driving": 1,
+      "digital": 3,
+      "tax": 1
+    },
+    "combinedSearchReset": true,
+    "conversationPreserved": true,
+    "followupFocus": true,
+    "sourcesBirth": true,
+    "shareNuss": "http://127.0.0.1:4173/chat?guia=nuss&detalle=consult",
+    "englishShare": "?guia=nuss&detalle=consult&idioma=en",
+    "privacySyntheticBlocked": true,
+    "escapeRestoresTrigger": true,
+    "consoleErrors": 0,
+    "typedEnterKeepsField": true
+  },
+  "limits": "Emulated viewport checks, not physical-device or accessibility certification",
+  "categoryChecks": [
+    {
+      "labels": [
+        "DNI y pasaporte",
+        "Vida laboral",
+        "Paro y prestaciones",
+        "Cl@ve",
+        "Mis trámites",
+        "Renta",
+        "Ayudas y becas",
+        "Padrón",
+        "Tarjeta sanitaria",
+        "Certificado digital",
+        "Tarjeta Sanitaria Europea",
+        "Permiso de conducir",
+        "Certificado de nacimiento",
+        "Número de la Seguridad Social"
+      ],
+      "resultCount": "14 guías disponibles",
+      "selected": "Todas"
+    },
+    {
+      "labels": ["DNI y pasaporte", "Padrón", "Certificado de nacimiento"],
+      "resultCount": "3 guías disponibles",
+      "selected": "Documentos"
+    },
+    {
+      "labels": [
+        "Vida laboral",
+        "Paro y prestaciones",
+        "Ayudas y becas",
+        "Número de la Seguridad Social"
+      ],
+      "resultCount": "4 guías disponibles",
+      "selected": "Trabajo y ayudas"
+    },
+    {
+      "labels": ["Tarjeta sanitaria", "Tarjeta Sanitaria Europea"],
+      "resultCount": "2 guías disponibles",
+      "selected": "Salud"
+    },
+    {
+      "labels": ["Permiso de conducir"],
+      "resultCount": "1 guía disponible",
+      "selected": "Conducción"
+    },
+    {
+      "labels": ["Cl@ve", "Mis trámites", "Certificado digital"],
+      "resultCount": "3 guías disponibles",
+      "selected": "Trámites digitales"
+    },
+    {
+      "labels": ["Renta"],
+      "resultCount": "1 guía disponible",
+      "selected": "Impuestos"
+    }
+  ]
+}

@@ -121,3 +121,19 @@ La cabecera del chat añade Guías junto al menú; portada, fotos y tipografías
 El icono de enlace copia únicamente guía, seguimiento e idioma permitidos. Se ha abierto un enlace de certificado de padrón copiado desde una respuesta de Madrid y comprobado que reconstruye orientación general sin municipio ni conversación. Cambiar idioma actualiza el enlace y borrar limpia parámetros. No se comparten consultas ni documentos.
 
 Build correcto, 38 pruebas correctas, consola sin errores/advertencias y auditoría de dependencias con cero vulnerabilidades comunicadas. Se mantienen los límites de guías preparadas, revisión territorial pendiente indicada y pruebas con tamaños emulados.
+
+## Catorce guías y catálogo por temas
+
+Fecha: 2 de octubre de 2026. Alcance y aceptación previos en `docs/plan-ampliacion-14-guias.md`; pruebas y recorrido en `qa/expanded-guides-2026-10-02/README.md`.
+
+Se añaden TSE/CPS, renovación y duplicado del permiso de conducir español, certificado de nacimiento y NUSS. Cada familia incluye principal y seguimiento propios ES/EN, tres pasos con referencias y acciones a fuentes oficiales. Se conservan las diez familias anteriores y la orientación territorial existente.
+
+El catálogo permite combinar búsqueda con seis categorías. Todas las guías siguen accesibles desde portada, inicio del chat, cabecera y menú. Portada e inicio del chat muestran una selección de seis preguntas para reducir la longitud en móvil. Fuera de cobertura se ofrece el directorio y un acceso al catálogo completo. Los recuentos de guías y las explicaciones son dinámicos. Saludo, fotografía, carrusel, tipografía y composición de America.gov se conservan.
+
+La revisión independiente reprodujo y corrigió pérdida de puntos interpretada como pérdida del documento, renovación ADR o de permiso extranjero, partida de nacimiento desviada a FNMT/DNI, solicitud presencial tratada como ausencia de Cl@ve, inscripción de nacimiento y alta de trabajador fuera de alcance. Regresiones en el corpus de intención. El filtro básico incorpora NUSS compactos y agrupados, con un aviso que identifica el dato que debe retirarse.
+
+Build correcto y **43 pruebas pasan**, incluido contrato Sites y exclusión de activos sin licencia. Navegador: todas las categorías, búsqueda combinada y recuperación, principales y seguimientos nuevos, fuentes, conservación de conversación, idioma y enlace NUSS comprobados. Escape restablece el acceso y Enter mantiene el foco en el campo; los seguimientos llevan el foco a su respuesta. Consola del recorrido sin errores ni avisos.
+
+Vistas emuladas de 320, 390, 768 y 1440 px sin desbordamiento horizontal de documento o diálogo. Filtros y botones del compositor de al menos 44 px, también en tablet; acciones oficiales ajustan sus etiquetas. Las capturas de catálogo móvil y conducción en inglés se guardan en la carpeta de QA. Se verifica commit y despliegue listo antes de informar la publicación.
+
+Límites: no se completan solicitudes autenticadas ni se decide elegibilidad. TSE/CPS enlazan información oficial con cuerpo comprobado; el formulario de Prestaciones no se presenta como probado porque devolvió cuerpo vacío. Sin IA ni nueva recogida de datos. La revisión no certifica WCAG ni teléfonos físicos.

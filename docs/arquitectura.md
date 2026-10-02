@@ -6,12 +6,12 @@ Investigación inicial: 30 de septiembre de 2026. Implementación actualizada: 2
 
 America.gov es actualmente un portal de consultas conversacionales sobre servicios públicos. La portada conduce a un chat y explica fuentes, privacidad y futuras integraciones. La reconstrucción se basa en inspección del sitio cargado, capturas de escritorio y móvil, navegación y activos que el navegador recibió.
 
-| Superficie | Observación |
-| --- | --- |
-| Portada | Aviso institucional, cabecera, saludo serif, foto con formulario, carrusel, manifiesto, cuatro bloques de beneficios, avances y pie |
-| Chat | Consulta, respuesta por pasos, fuentes, acciones de copiar y valorar, sugerencias y formulario fijo |
-| Información | Cómo funciona, privacidad, sobre el proyecto, avances, FAQ y condiciones |
-| Móvil | Cabecera compacta, título de 48 px, foto vertical, formulario de dos filas, bloques apilados |
+| Superficie  | Observación                                                                                                                         |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Portada     | Aviso institucional, cabecera, saludo serif, foto con formulario, carrusel, manifiesto, cuatro bloques de beneficios, avances y pie |
+| Chat        | Consulta, respuesta por pasos, fuentes, acciones de copiar y valorar, sugerencias y formulario fijo                                 |
+| Información | Cómo funciona, privacidad, sobre el proyecto, avances, FAQ y condiciones                                                            |
+| Móvil       | Cabecera compacta, título de 48 px, foto vertical, formulario de dos filas, bloques apilados                                        |
 
 Su [página de funcionamiento](https://america.gov/how-it-works) describe respuestas basadas en sitios oficiales. Su [página de privacidad](https://america.gov/privacy) explica el tratamiento de conversaciones y datos. Son afirmaciones del producto; no demuestran qué proveedor o infraestructura usa.
 
@@ -31,15 +31,15 @@ La referencia anuncia muchas fuentes y futuras gestiones. Esta versión no copia
 
 ## Fuentes españolas consultadas
 
-| Tema | Fuente oficial y uso |
-| --- | --- |
-| Localizar servicios | [Punto de Acceso General](https://administracion.gob.es/tramites-electronicos): directorio de trámites y administraciones |
-| Identificación | [Cl@ve](https://clave.gob.es/registro/como-puedo-registrarme.html): métodos de registro y niveles de identificación |
-| Expedientes | [Mi Carpeta Ciudadana](https://carpetaciudadana.gob.es/): información y servicios de organismos participantes |
-| Vida laboral | [Import@ss](https://portal.seg-social.gob.es/): informes y formas de acceso a la Seguridad Social |
-| Desempleo | [SEPE](https://www.sepe.es/HomeSepe/prestaciones-desempleo.html) y [su sede](https://sede.sepe.gob.es/portalSede/procedimientos-y-servicios/personas.html): orientación y canales de solicitud |
-| Documentación | [Interior](https://www.interior.gob.es/opencms/es/servicios-al-ciudadano/tramites-y-gestiones/dni/cita-previa/) y [Cita Previa DNI](https://www.citapreviadnie.es/): citas y requisitos de renovación |
-| Renta | [Agencia Tributaria](https://sede.agenciatributaria.gob.es/): acceso a Renta WEB y ayuda oficial |
+| Tema                | Fuente oficial y uso                                                                                                                                                                                  |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Localizar servicios | [Punto de Acceso General](https://administracion.gob.es/tramites-electronicos): directorio de trámites y administraciones                                                                             |
+| Identificación      | [Cl@ve](https://clave.gob.es/registro/como-puedo-registrarme.html): métodos de registro y niveles de identificación                                                                                   |
+| Expedientes         | [Mi Carpeta Ciudadana](https://carpetaciudadana.gob.es/): información y servicios de organismos participantes                                                                                         |
+| Vida laboral        | [Import@ss](https://portal.seg-social.gob.es/): informes y formas de acceso a la Seguridad Social                                                                                                     |
+| Desempleo           | [SEPE](https://www.sepe.es/HomeSepe/prestaciones-desempleo.html) y [su sede](https://sede.sepe.gob.es/portalSede/procedimientos-y-servicios/personas.html): orientación y canales de solicitud        |
+| Documentación       | [Interior](https://www.interior.gob.es/opencms/es/servicios-al-ciudadano/tramites-y-gestiones/dni/cita-previa/) y [Cita Previa DNI](https://www.citapreviadnie.es/): citas y requisitos de renovación |
+| Renta               | [Agencia Tributaria](https://sede.agenciatributaria.gob.es/): acceso a Renta WEB y ayuda oficial                                                                                                      |
 
 Las guías orientan hacia estos servicios. No calculan prestaciones ni impuestos, no determinan elegibilidad y no ofrecen fechas, tasas o requisitos personalizados sin comprobar la convocatoria correspondiente. Para ayudas regionales se remite al organismo competente.
 
@@ -50,7 +50,7 @@ Las guías orientan hacia estos servicios. No calculan prestaciones ni impuestos
 ```mermaid
 flowchart LR
   U[Usuario] --> UI[React: portada, chat, páginas]
-  UI --> G[10 guías locales ES / EN]
+  UI --> G[14 guías locales ES / EN]
   G --> T[Municipio o comunidad opcional]
   UI --> PDF[PDF.js: lectura en navegador]
   G --> S[Enlaces a fuentes oficiales]
@@ -58,6 +58,8 @@ flowchart LR
 ```
 
 La clasificación compara preguntas completas y patrones de intención en español e inglés, con abstención ante ambigüedad o varios trámites. No es IA, no recupera contenido en tiempo real y puede equivocarse al interpretar una frase. Cuando no hay coincidencia, ofrece el directorio oficial. Los datos del chat permanecen en memoria y desaparecen al recargar.
+
+El catálogo buscable permite combinar seis categorías con términos de búsqueda. La portada y el inicio del chat muestran seis consultas frecuentes y un acceso a las catorce guías. Las explicaciones calculan el recuento a partir de los datos. La ampliación incorpora TSE/CPS, renovación/duplicado del permiso español, certificado de nacimiento con vía sin Cl@ve y solicitud/acreditación del NUSS; mantiene separados los trámites principales y sus seguimientos. Fuentes: [viajes y conducción](fuentes-viajes-conduccion-2026-10-02.md) e [identidad y Seguridad Social](fuentes-identidad-seguridad-social-2026-10-02.md). Los patrones de privacidad básica también detectan NUSS de doce cifras compactas o con separadores.
 
 Padrón y tarjeta sanitaria ofrecen selección territorial opcional dentro de la respuesta. El selector sanitario cubre 17 comunidades y Ceuta/Melilla; el catálogo municipal inicial contiene siete destinos revisados y remite el resto al directorio oficial. Los seguimientos conservan el territorio de la respuesta que los abrió. Los municipios no reconocidos se introducen solo en el campo explícito. No se infieren requisitos personales. Fuentes y límites: [guías](fuentes-guias-practicas-2026-10-02.md), [territorios](fuentes-territoriales-2026-10-02.md).
 
