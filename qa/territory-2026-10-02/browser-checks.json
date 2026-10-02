@@ -1,0 +1,339 @@
+[
+  {
+    "brokenImages": 0,
+    "height": 740,
+    "kind": "home",
+    "overflow": false,
+    "topics": 10,
+    "width": 320
+  },
+  {
+    "brokenImages": 0,
+    "height": 844,
+    "kind": "home",
+    "overflow": false,
+    "topics": 10,
+    "width": 390
+  },
+  {
+    "brokenImages": 0,
+    "height": 1024,
+    "kind": "home",
+    "overflow": false,
+    "topics": 10,
+    "width": 768
+  },
+  {
+    "brokenImages": 0,
+    "height": 1000,
+    "kind": "home",
+    "overflow": false,
+    "topics": 10,
+    "width": 1440
+  },
+  {
+    "focus": "answer-c4744f38-8fe0-4b6c-ab5f-7156a45bd616",
+    "href": "https://sede.madrid.es/portal/site/tramites/menuitem.62876cb64654a55e2dbd7003a8a409a0/?vgnextchannel=b49ca38813180210VgnVCM100000c90da8c0RCRD&vgnextoid=3e3debb41f6e2410VgnVCM2000000c205a0aRCRD",
+    "kind": "Madrid-registration",
+    "overflow": false,
+    "territory": "Territorio: MadridCambiar",
+    "title": "El padrón se tramita en tu ayuntamiento.",
+    "titleTop": 158
+  },
+  {
+    "kind": "Madrid-certificate",
+    "links": [
+      {
+        "href": "https://sede.madrid.es/portal/site/tramites/menuitem.62876cb64654a55e2dbd7003a8a409a0/?vgnextchannel=5527814231ede410VgnVCM1000000b205a0aRCRD&vgnextfmt=d&vgnextoid=23ccdd9d6baed010VgnVCM2000000c205a0aRCRD",
+        "text": "Ver certificado de empadronamiento"
+      },
+      {
+        "href": "https://administracion.gob.es/espanaadmon/quienesquien/entidades-locales-ayuntamientos-estructuras-y-directorios",
+        "text": "Encontrar mi ayuntamiento"
+      }
+    ],
+    "notice": "Servicio oficial para Madrid. Comprueba allí los requisitos de tu situación.",
+    "overflow": false,
+    "picker": false,
+    "territory": "Territorio: MadridCambiar",
+    "title": "Pide el documento de padrón que te soliciten."
+  },
+  {
+    "kind": "Barcelona-change",
+    "links": [
+      {
+        "href": "https://seuelectronica.ajuntament.barcelona.cat/es/tramites-telematicos",
+        "text": "Abrir catálogo municipal de trámites"
+      },
+      {
+        "href": "https://administracion.gob.es/espanaadmon/quienesquien/entidades-locales-ayuntamientos-estructuras-y-directorios",
+        "text": "Encontrar mi ayuntamiento"
+      }
+    ],
+    "notice": "Servicio oficial para Barcelona. Comprueba allí los requisitos de tu situación.",
+    "overflow": false,
+    "picker": false,
+    "territory": "Territorio: BarcelonaCambiar",
+    "title": "Pide el documento de padrón que te soliciten."
+  },
+  {
+    "kind": "Old-Madrid-followup-after-Barcelona",
+    "links": [
+      {
+        "href": "https://sede.madrid.es/portal/site/tramites/menuitem.62876cb64654a55e2dbd7003a8a409a0/?vgnextchannel=5527814231ede410VgnVCM1000000b205a0aRCRD&vgnextfmt=d&vgnextoid=23ccdd9d6baed010VgnVCM2000000c205a0aRCRD",
+        "text": "Ver certificado de empadronamiento"
+      },
+      {
+        "href": "https://administracion.gob.es/espanaadmon/quienesquien/entidades-locales-ayuntamientos-estructuras-y-directorios",
+        "text": "Encontrar mi ayuntamiento"
+      }
+    ],
+    "notice": "Servicio oficial para Madrid. Comprueba allí los requisitos de tu situación.",
+    "overflow": false,
+    "picker": false,
+    "territory": "Territorio: MadridCambiar",
+    "title": "Pide el documento de padrón que te soliciten."
+  },
+  {
+    "kind": "Alpedrete-directory",
+    "links": [
+      {
+        "href": "https://administracion.gob.es/espanaadmon/quienesquien/entidades-locales-ayuntamientos-estructuras-y-directorios",
+        "text": "Encontrar mi ayuntamiento"
+      }
+    ],
+    "notice": "No tenemos un enlace municipal revisado para Alpedrete. Usa el directorio oficial para localizar tu ayuntamiento. La orientación de esta guía es general.",
+    "overflow": false,
+    "picker": false,
+    "territory": "Territorio: AlpedreteCambiar",
+    "title": "Pide el documento de padrón que te soliciten."
+  },
+  {
+    "kind": "Unrecognized-place-resets",
+    "links": [
+      {
+        "href": "https://administracion.gob.es/espanaadmon/quienesquien/entidades-locales-ayuntamientos-estructuras-y-directorios",
+        "text": "Encontrar mi ayuntamiento"
+      }
+    ],
+    "notice": null,
+    "overflow": false,
+    "picker": true,
+    "territory": null,
+    "title": "El padrón se tramita en tu ayuntamiento."
+  },
+  {
+    "kind": "Ceuta-INGESA-320",
+    "links": [
+      {
+        "href": "https://ingesa.sanidad.gob.es/ceuta",
+        "text": "Abrir el servicio de salud de Ceuta"
+      },
+      {
+        "href": "https://www.sanidad.gob.es/organizacion/ccaa/directorio/home.htm",
+        "text": "Localizar mi servicio de salud"
+      }
+    ],
+    "notice": "Servicio oficial para Ceuta. Comprueba allí los requisitos de tu situación.",
+    "overflow": false,
+    "picker": false,
+    "territory": "Territorio: CeutaCambiar",
+    "title": "Consulta la tarjeta sanitaria en tu servicio de salud."
+  },
+  {
+    "kind": "Catalonia-first-card",
+    "links": [
+      {
+        "href": "https://catsalut.gencat.cat/ca/coneix-catsalut/acces-sistema-salut/la-tsi/obtencio-tsi/",
+        "text": "Ver cómo obtener la primera tarjeta"
+      },
+      {
+        "href": "https://www.sanidad.gob.es/organizacion/ccaa/directorio/home.htm",
+        "text": "Localizar mi servicio de salud"
+      }
+    ],
+    "notice": "Servicio oficial para Cataluña. Comprueba allí los requisitos de tu situación.",
+    "overflow": false,
+    "picker": false,
+    "territory": "Territorio: CataluñaCambiar",
+    "title": "Consulta la tarjeta sanitaria en tu servicio de salud."
+  },
+  {
+    "kind": "Catalonia-replacement",
+    "links": [
+      {
+        "href": "https://catsalut.gencat.cat/ca/coneix-catsalut/acces-sistema-salut/la-tsi/obtencio-tsi/solicitud-reedicio-tsi/",
+        "text": "Ver cómo pedir un duplicado"
+      },
+      {
+        "href": "https://www.sanidad.gob.es/organizacion/ccaa/directorio/home.htm",
+        "text": "Localizar mi servicio de salud"
+      }
+    ],
+    "notice": "Servicio oficial para Cataluña. Comprueba allí los requisitos de tu situación.",
+    "overflow": false,
+    "picker": false,
+    "territory": "Territorio: CataluñaCambiar",
+    "title": "Consulta cómo pedir una tarjeta de sustitución."
+  },
+  {
+    "kind": "sources-Escape",
+    "closed": true
+  },
+  {
+    "kind": "Quiero pedir el padrón y una tarjeta sanitaria",
+    "links": [
+      {
+        "href": "https://administracion.gob.es/tramites-electronicos",
+        "text": "Localizar un trámite en el portal oficial"
+      }
+    ],
+    "notice": null,
+    "overflow": false,
+    "picker": false,
+    "territory": null,
+    "title": "Busquemos el servicio adecuado."
+  },
+  {
+    "kind": "Necesito renovar mi certificado digital FNMT",
+    "links": [
+      {
+        "href": "https://www.sede.fnmt.gob.es/certificados/persona-fisica/renovar",
+        "text": "Ver condiciones para renovar en la FNMT"
+      },
+      {
+        "href": "https://www.sede.fnmt.gob.es/certificados/persona-fisica",
+        "text": "Ver cómo obtener un nuevo certificado"
+      }
+    ],
+    "notice": null,
+    "overflow": false,
+    "picker": false,
+    "territory": null,
+    "title": "Comprueba si tu certificado FNMT puede renovarse."
+  },
+  {
+    "fields": [
+      {
+        "height": 48,
+        "right": 287,
+        "tag": "SELECT"
+      },
+      {
+        "height": 50,
+        "right": 287,
+        "tag": "BUTTON"
+      }
+    ],
+    "kind": "English-health-form",
+    "overflow": false,
+    "width": 320
+  },
+  {
+    "fields": [
+      {
+        "height": 48,
+        "right": 339,
+        "tag": "SELECT"
+      },
+      {
+        "height": 50,
+        "right": 339,
+        "tag": "BUTTON"
+      }
+    ],
+    "kind": "English-health-form",
+    "overflow": false,
+    "width": 390
+  },
+  {
+    "fields": [
+      {
+        "height": 52,
+        "right": 525.234375,
+        "tag": "SELECT"
+      },
+      {
+        "height": 52,
+        "right": 702,
+        "tag": "BUTTON"
+      }
+    ],
+    "kind": "English-health-form",
+    "overflow": false,
+    "width": 768
+  },
+  {
+    "fields": [
+      {
+        "height": 52,
+        "right": 861.234375,
+        "tag": "SELECT"
+      },
+      {
+        "height": 52,
+        "right": 1038,
+        "tag": "BUTTON"
+      }
+    ],
+    "kind": "English-health-form",
+    "overflow": false,
+    "width": 1440
+  },
+  {
+    "kind": "English-bare-Andalucia",
+    "links": [
+      {
+        "href": "https://www.sspa.juntadeandalucia.es/servicioandaluzdesalud/ciudadania/tarjeta-sanitaria-de-andalucia",
+        "text": "View health card information"
+      },
+      {
+        "href": "https://www.sanidad.gob.es/organizacion/ccaa/directorio/home.htm",
+        "text": "Find my health service"
+      }
+    ],
+    "notice": "Official service for Andalucía. Your circumstances and the requirements must be checked there.",
+    "overflow": false,
+    "picker": false,
+    "territory": "Area: AndalucíaChange",
+    "title": "Check the health card with your health service."
+  },
+  {
+    "kind": "English-FNMT-renewal",
+    "links": [
+      {
+        "href": "https://www.sede.fnmt.gob.es/certificados/persona-fisica/renovar",
+        "text": "Check FNMT renewal conditions"
+      },
+      {
+        "href": "https://www.sede.fnmt.gob.es/certificados/persona-fisica",
+        "text": "Check how to get a new certificate"
+      }
+    ],
+    "notice": null,
+    "overflow": false,
+    "picker": false,
+    "territory": null,
+    "title": "Check whether your FNMT certificate can be renewed."
+  },
+  {
+    "answers": 0,
+    "focus": "main",
+    "kind": "clear",
+    "suggestions": 10
+  },
+  {
+    "kind": "invalid-town",
+    "error": "Introduce únicamente un nombre de municipio, por ejemplo: Madrid.",
+    "answers": 1
+  },
+  {
+    "focus": "answer-1ca464e7-6226-4ff0-a13c-76b3eea5ab53",
+    "kind": "keyboard-town-submit",
+    "territory": "Territorio: MadridCambiar"
+  },
+  {
+    "kind": "console",
+    "messages": []
+  }
+]

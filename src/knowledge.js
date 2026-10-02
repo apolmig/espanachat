@@ -1,4 +1,15 @@
+import { practicalSources, practicalGuides } from "./practical-guides.js";
+import { matchGuideIntent, matchGuideDetail } from "./intent-matching.js";
+import {
+  territorialSources,
+  applyTerritory,
+  resolveTerritory,
+  findTerritoryReply,
+} from "./territorial-context.js";
+
 export const sources = {
+  ...practicalSources,
+  ...territorialSources,
   pag: {
     name: "Punto de Acceso General",
     domain: "administracion.gob.es",
@@ -860,12 +871,15 @@ const guideServices = {
   },
 };
 
-export const guides = baseGuides.map((guide) => ({
-  ...guide,
-  ...guideServices[guide.id],
-  reviewedAt: "2026-10-02",
-  followups: [guideServices[guide.id].detail.question],
-}));
+export const guides = [
+  ...baseGuides.map((guide) => ({
+    ...guide,
+    ...guideServices[guide.id],
+    reviewedAt: "2026-10-02",
+    followups: [guideServices[guide.id].detail.question],
+  })),
+  ...practicalGuides,
+];
 
 const normalizeQuestion = (text) =>
   normalize(text)
@@ -888,10 +902,27 @@ function findDetail(text, previousId) {
 export function resolveGuide(text, previousId) {
   const detailGuide = findDetail(text, previousId);
   if (detailGuide) return { guide: detailGuide, detail: detailGuide.detail.id };
-  return { guide: findGuide(text), detail: null };
+  const guide = findGuide(text);
+  return { guide, detail: guide ? matchGuideDetail(text, guide) : null };
 }
 
-export function getGuideContent(guideId, detailId, lang = "es") {
+export function resolveConsultation(text, previousAnswer) {
+  const previous = previousAnswer?.stopped ? null : previousAnswer;
+  let { guide, detail } = resolveGuide(text, previous?.guide);
+  if (!guide && previous?.guide) {
+    const previousGuide = guides.find((item) => item.id === previous.guide);
+    const reply = findTerritoryReply(previousGuide, text);
+    if (reply)
+      return {
+        guide: previousGuide,
+        detail: previous.detail || null,
+        territory: reply,
+      };
+  }
+  return { guide, detail, territory: resolveTerritory(guide, text, previous) };
+}
+
+export function getGuideContent(guideId, detailId, lang = "es", territory) {
   const guide = guides.find((g) => g.id === guideId);
   if (!guide) return null;
   const detail = detailId === guide.detail.id ? guide.detail : null;
@@ -900,8 +931,10 @@ export function getGuideContent(guideId, detailId, lang = "es") {
     ...(lang === "en" ? guide.en : {}),
     ...detail,
     ...(lang === "en" && detail ? detail.en : {}),
+    guideId: guide.id,
+    detailId: detail?.id || null,
   };
-  return content;
+  return applyTerritory(content, territory, lang);
 }
 
 export function formatReviewDate(date, lang = "es") {
@@ -922,56 +955,7 @@ export function normalize(text) {
 export function findGuide(text, previousId) {
   const detailGuide = findDetail(text, previousId);
   if (detailGuide) return detailGuide;
-  // A short follow-up without its own topic should not become a new,
-  // unrelated answer just because it contains a keyword such as identity.
-  if (
-    guides.some((guide) =>
-      guide.detail.aliases.some(
-        (alias) => normalizeQuestion(alias) === normalizeQuestion(text),
-      ),
-    )
-  )
-    return null;
-  const q = normalize(text).trim().replace(/\s+/g, " ");
-  const exact = guides.find(
-    (g) => normalize(g.question) === q || normalize(g.en.question) === q,
-  );
-  if (exact) return exact;
-  const broadTerms = new Set([
-    "tramites",
-    "estado",
-    "ayuda",
-    "benefit",
-    "impuestos",
-    "firma",
-    "certificado",
-    "identidad",
-    "renovar",
-  ]);
-  const matchesKeyword = (keyword) => {
-    const term = normalize(keyword).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    // Match complete words, including simple plurals, rather than fragments
-    // such as "renta" inside "cuarenta" or "clave" inside "enclave".
-    return new RegExp(`(?:^|[^a-z0-9])${term}(?:s|es)?(?:$|[^a-z0-9])`).test(q);
-  };
-  const ranked = guides
-    .map((g) => ({
-      guide: g,
-      score: g.keywords.reduce(
-        (s, k) =>
-          s +
-          (matchesKeyword(k)
-            ? broadTerms.has(k)
-              ? 1
-              : Math.max(2, k.length)
-            : 0),
-        0,
-      ),
-    }))
-    .sort((a, b) => b.score - a.score);
-  if (ranked[0].score >= 2 && ranked[0].score > ranked[1].score)
-    return ranked[0].guide;
-  return null;
+  return matchGuideIntent(text, guides);
 }
 export function hasPersonalData(text) {
   return (

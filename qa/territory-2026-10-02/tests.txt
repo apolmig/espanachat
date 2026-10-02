@@ -1,0 +1,44 @@
+
+> espana@0.0.0 test
+> node --test tests/*.test.mjs
+
+✔ exact guide questions have priority in both languages with punctuation and accents normalized (11.5065ms)
+✔ common Spanish and English requests select a single useful guide (17.7753ms)
+✔ ambiguous words, fragments and unsupported procedures do not produce a guessed answer (8.113ms)
+✔ two distinct requested topics abstain, while ID and passport remain one family (3.42ms)
+✔ identification named only as a method does not absorb the requested procedure (1.4385ms)
+✔ routing is pure and restricted to the provided guides, without context or generic keyword fallback (1.1051ms)
+✔ regional health card and certificate-based signature terminology has clear topic anchors (3.1173ms)
+✔ certificate renewal requests open renewal instead of obtaining a certificate (2.3476ms)
+✔ explicit lost, stolen, damaged or duplicate health cards open replacement (4.7877ms)
+✔ municipal certificates and registration slips open proof of registration, not first registration (8.2381ms)
+✔ detail matching is pure, rejects mixed families, and requires the correct supported detail (1.5929ms)
+✔ every suggested question resolves to its own guide in both languages (9.1324ms)
+✔ free-form common queries resolve despite accents and case (14.0108ms)
+✔ unknown questions do not inherit an unrelated previous answer (0.8606ms)
+✔ all guides have real source entries and supported follow-up questions (1.4128ms)
+✔ follow-ups provide a distinct answer in the same topic in both languages (5.5003ms)
+✔ short follow-ups use the current topic without carrying unrelated context (6.97ms)
+✔ every step and action points to a source included in its answer (1.736ms)
+✔ practical actions land on the appropriate service, not the first source (0.2108ms)
+✔ generic words and word fragments do not select unrelated guides (2.66ms)
+✔ basic personal-data patterns are blocked without blocking ordinary questions (1.1228ms)
+✔ ships licensed fonts and icons without archived reference assets (14.8764ms)
+✔ serves existing static assets without a fallback (55.2914ms)
+✔ falls back to index.html for an unknown app route (3.0255ms)
+✔ does not turn missing API or write requests into the app shell (1.5859ms)
+✔ emits the files required by Sites packaging (7.021ms)
+✔ health selection covers every autonomous community and both autonomous cities (4.1369ms)
+✔ municipal guidance distinguishes reviewed destinations from the directory fallback (3.7529ms)
+✔ registration and replacement keep destinations distinct from certificates and first cards (0.4346ms)
+✔ territory follows the answer and is cleared by another topic or an unknown answer (38.8565ms)
+✔ a bare place answers a pending territorial question without stealing unrelated queries (5.8558ms)
+✔ places are not inferred from addresses, ambiguous names or two locations (1.3055ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 262.634

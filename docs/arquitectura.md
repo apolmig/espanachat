@@ -1,6 +1,6 @@
 # España: investigación y arquitectura
 
-Fecha: 30 de septiembre de 2026. Referencia: [America.gov](https://america.gov/).
+Investigación inicial: 30 de septiembre de 2026. Implementación actualizada: 2 de octubre de 2026. Referencia: [America.gov](https://america.gov/).
 
 ## Lo que hay en la referencia
 
@@ -25,7 +25,7 @@ Las fuentes servidas son Rhymes Text, Rhymes Display y Helvetica Now. La paleta 
 
 ## Adaptación a España
 
-Se conserva la estructura, tipografías, jerarquía, navegación y comportamiento responsive. Se sustituyen la identidad, la consulta inicial, el contexto fotográfico y los organismos. El sitio se presenta como un **prototipo independiente**, sin afiliación al Gobierno de España. No utiliza un dominio gubernamental ni promete funciones administrativas inexistentes.
+Se conserva la estructura, contraste tipográfico, jerarquía, navegación y comportamiento responsive. Se sustituyen la identidad, la consulta inicial, el contexto fotográfico y los organismos. El sitio se presenta como un **prototipo independiente**, sin afiliación al Gobierno de España. No utiliza un dominio gubernamental ni promete funciones administrativas inexistentes.
 
 La referencia anuncia muchas fuentes y futuras gestiones. Esta versión no copia esas cifras ni promete fechas. El chat dice expresamente que usa guías locales y que no hay IA conectada.
 
@@ -45,18 +45,21 @@ Las guías orientan hacia estos servicios. No calculan prestaciones ni impuestos
 
 ## Lo construido
 
-**React 19 + Vite 6**, con rutas del navegador, CSS específico, activos locales, iconos originales de la referencia y Phosphor para controles adicionales. Se eligió Vite para entregar un frontend comprobable sin añadir un servidor innecesario a esta primera versión. No se afirma que esta sea la arquitectura privada de America.gov.
+**React 19 + Vite 6**, con rutas del navegador, CSS específico, fotografías españolas, fuentes Inter/Libre Caslon Display bajo SIL OFL e iconos Phosphor bajo MIT. Los activos de referencia sin licencia documentada se conservan fuera del directorio publicado. Se eligió Vite para entregar un frontend comprobable sin añadir un servidor innecesario. No se afirma que esta sea la arquitectura privada de America.gov.
 
 ```mermaid
 flowchart LR
   U[Usuario] --> UI[React: portada, chat, páginas]
-  UI --> G[7 guías locales ES / EN]
+  UI --> G[10 guías locales ES / EN]
+  G --> T[Municipio o comunidad opcional]
   UI --> PDF[PDF.js: lectura en navegador]
   G --> S[Enlaces a fuentes oficiales]
   UI --> V[Voz opcional del navegador]
 ```
 
-La clasificación compara palabras y preguntas conocidas. No es IA, no recupera contenido en tiempo real y puede equivocarse al interpretar una frase. Cuando no hay coincidencia, ofrece el directorio oficial. Los datos del chat permanecen en memoria y desaparecen al recargar.
+La clasificación compara preguntas completas y patrones de intención en español e inglés, con abstención ante ambigüedad o varios trámites. No es IA, no recupera contenido en tiempo real y puede equivocarse al interpretar una frase. Cuando no hay coincidencia, ofrece el directorio oficial. Los datos del chat permanecen en memoria y desaparecen al recargar.
+
+Padrón y tarjeta sanitaria ofrecen selección territorial opcional dentro de la respuesta. El selector sanitario cubre 17 comunidades y Ceuta/Melilla; el catálogo municipal inicial contiene siete destinos revisados y remite el resto al directorio oficial. Los seguimientos conservan el territorio de la respuesta que los abrió. Los municipios no reconocidos se introducen solo en el campo explícito. No se infieren requisitos personales. Fuentes y límites: [guías](fuentes-guias-practicas-2026-10-02.md), [territorios](fuentes-territoriales-2026-10-02.md).
 
 El lector usa PDF.js bajo demanda, procesa hasta 10 MB y 20 páginas, y muestra hasta 30.000 caracteres extraídos. No sube archivos, no incluye OCR, no verifica autenticidad y no resume con IA. El dictado depende del navegador y de su proveedor de reconocimiento de voz. Las valoraciones y el formulario de opinión son locales.
 
@@ -83,10 +86,11 @@ Las integraciones con Cl@ve o Carpeta Ciudadana necesitan acceso y autorización
 
 ## Siguiente fase concreta
 
-1. Aprobar una identidad propia y revisar licencias de los activos de la referencia.
-2. Seleccionar proveedor y reglas de datos; configurar secretos exclusivamente en servidor.
-3. Implementar ingestión y búsqueda sobre un conjunto pequeño de fuentes oficiales.
-4. Conectar la API al chat y reemplazar el aviso de guías locales solo cuando exista una IA real.
-5. Validar respuestas y accesibilidad; desplegar después de revisar la versión concreta.
+La identidad española, activos con licencias y publicación del frontend ya están resueltos. La siguiente fase sigue pendiente:
+
+1. Seleccionar proveedor y reglas de datos; configurar secretos exclusivamente en servidor.
+2. Implementar ingestión y búsqueda sobre un conjunto pequeño de fuentes oficiales.
+3. Conectar la API al chat y reemplazar el aviso de guías locales solo cuando exista una IA real.
+4. Validar respuestas y accesibilidad; desplegar después de revisar la versión concreta.
 
 El código, las instrucciones de ejecución y los créditos están en la raíz del repositorio. La comparación visual y las comprobaciones se documentan en [design-qa.md](../design-qa.md).

@@ -19,7 +19,8 @@ npm test
 ## Funciones
 
 - Portada con carrusel y controles de pausa, menú, seis páginas informativas y condiciones.
-- Chat con siete guías en español e inglés, fuentes, consultas sugeridas, copia y valoración local.
+- Chat con diez guías en español e inglés, fuentes por paso, seguimientos del mismo tema, copia y valoración local.
+- Orientación territorial para padrón y tarjeta sanitaria: selector de 19 comunidades/ciudades autónomas, enlaces municipales revisados y directorio oficial para el resto. El contexto se conserva solo al seguir con el mismo trámite y desaparece al borrar o recargar.
 - Filtro básico de patrones de datos personales. No sustituye un sistema completo de protección.
 - Lectura de texto PDF en el navegador, sin subir archivos. Máximo 10 MB, 20 páginas y 30.000 caracteres. Sin OCR ni IA.
 - Dictado cuando el navegador lo admite, sujeto a su proveedor y permisos.
@@ -45,6 +46,8 @@ Producción: [España.chat](https://espana.chat), en el proyecto existente `espa
 | `dist/server/`      | Adaptador de alojamiento del starter, sin API de IA                        |
 
 Para la investigación y la arquitectura propuesta, ver [docs/arquitectura.md](docs/arquitectura.md). El informe de QA está en `design-qa.md`. La procedencia de imágenes, fuentes e iconos está en [ASSETS.md](ASSETS.md). Las fuentes Inter y Libre Caslon Display y los iconos Phosphor se sirven con sus licencias. Los archivos de la referencia sin permisos documentados quedan fuera de la publicación.
+
+La expansión a diez guías sigue [el plan de la versión](docs/plan-version-10-guias.md). Las fuentes de padrón, TSI y FNMT y sus límites están en [fuentes de guías prácticas](docs/fuentes-guias-practicas-2026-10-02.md); los enlaces por territorio y sus comprobaciones, en [fuentes territoriales](docs/fuentes-territoriales-2026-10-02.md). La clasificación es determinista y se abstiene ante temas distintos o consultas fuera de cobertura; no interpreta cualquier frase ni usa IA.
 
 ## Identidad y enlaces compartidos
 

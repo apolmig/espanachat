@@ -8,7 +8,8 @@
 - Use clear, concise language and no em dash in user-facing copy or communication.
 - Keep a discreet footer credit, `Made with ♥ by apolmig`, linking to `https://github.com/apolmig`.
 - Prioritize responsive improvements for phones and tablets while keeping the closest possible visual resemblance to America.gov: typography, central greeting, photographic question field, carousel and spacious sections.
-- Use representative Spanish everyday scenes in the photography. Keep prepared guides for useful everyday consultations, and make all seven existing topics easy to find.
+- Use representative Spanish everyday scenes in the photography. Keep prepared guides for useful everyday consultations. On 2 October 2026 the user authorized the planned expansion to ten topics (padrón, regional health card and FNMT personal certificate), improved query matching and territorial context, followed by publication. See `docs/plan-version-10-guias.md`. AI integration and collecting feedback remain a later phase.
+- Territorial context is local and attached to each answer. Ask only for municipality or autonomous community/city; keep general guidance available and distinguish verified local links from the official directory fallback. Never invent personalized requirements or government integrations.
 - Production uses self-hosted Inter and Libre Caslon Display under SIL OFL, plus Phosphor icons under MIT. Keep license notices and exclude archived reference assets from the deployed directory. Preserve the reference's composition with these publishable assets.
 - The live site redirects www to `https://espana.chat/`; sharing metadata follows that canonical domain. The social card uses a warm photographic view of Spain with the wordmark inside the central square crop, no tiny text, and a versioned JPEG URL. Keep that composition legible at 90 × 90 px for WhatsApp thumbnails.
 

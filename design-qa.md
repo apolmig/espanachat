@@ -99,3 +99,15 @@ Fecha: 2 de octubre de 2026. Sitio existente confirmado: `espana-chat` en Netlif
 - La revisión de dependencias detectó avisos en Vite y dependencias del build. Se aplica Vite 6.4.3 y actualizaciones compatibles de dependencias transitivas. `npm audit fix` termina con cero vulnerabilidades comunicadas por el registro. [Aviso oficial de Vite](https://github.com/vitejs/vite/security/advisories/GHSA-fx2h-pf6j-xcff). La web publicada es estática, sin servidor de desarrollo.
 
 El build y las 15 pruebas pasan antes de publicar. La verificación del despliegue debe confirmar estado `ready`, commit y dominio principal, además de las rutas, guías, recursos y PDF en producción. El registro operativo posterior y sus capturas se conservan en la carpeta de QA local. No se declara una certificación de accesibilidad ni una auditoría exhaustiva de seguridad. Sigue siendo un prototipo independiente con guías preparadas y sin IA conectada.
+
+## Diez guías y orientación territorial
+
+Fecha: 2 de octubre de 2026. Plan y contratos previos en `docs/plan-version-10-guias.md`; resultados locales en `qa/territory-2026-10-02/README.md`.
+
+Se añaden padrón, tarjeta sanitaria individual y certificado FNMT, con seguimientos propios ES/EN, fuentes por paso y acciones precisas. El selector territorial se integra en el cuerpo de la respuesta. La portada conserva composición, tipografías con licencia, fotos españolas y carrusel. Los diez accesos se ajustan en 320, 390, 768 y 1440 px sin desbordamiento horizontal medido. El formulario sanitario inglés también se ha medido en los cuatro tamaños; campos y botones miden al menos 48 px de alto.
+
+La revisión independiente detectó y corrigió destinos que mezclaban alta y certificado de padrón, primera tarjeta y duplicado, certificados del DNIe y renovación del documento físico, y territorio heredado de otra respuesta. Los seguimientos usan su tarjeta de origen. Un lugar no reconocido o ambiguo no reutiliza otro anterior; el campo municipal explícito permite el directorio para localidades sin enlace revisado. La ficha de Castilla-La Mancha muestra su revisión pendiente sin fecha ficticia.
+
+Verificado en navegador: Madrid/Barcelona, Alpedrete y directorio, Cuenca sin falsa personalización, Ceuta/INGESA, Cataluña/duplicado, Andalucía escrita como respuesta corta en inglés, renovación FNMT en ambos idiomas, abstención ante dos trámites, fuentes y cierre con Escape, error de nombre municipal y envío con teclado. Borrar deja diez sugerencias y devuelve el foco al contenido. El selector mueve el foco a la respuesta nueva. Consola sin errores ni advertencias en el recorrido.
+
+Build correcto, compatibilidad Sites conservada y 32 pruebas automatizadas. `npm audit` informa cero vulnerabilidades. La revisión con tamaños emulados no certifica WCAG ni sustituye teléfonos físicos. La cobertura municipal directa es de siete ciudades; el resto usa el directorio. Las respuestas continúan siendo guías preparadas sin IA.

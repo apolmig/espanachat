@@ -18,12 +18,14 @@ import {
   guides,
   sources,
   findGuide,
-  resolveGuide,
+  resolveConsultation,
   getGuideContent,
   formatReviewDate,
   hasPersonalData,
 } from "./knowledge.js";
 import { InfoPage } from "./InfoPage.jsx";
+import { TerritoryPicker } from "./TerritoryPicker.jsx";
+import { prepareTerritory } from "./territorial-context.js";
 
 const asset = (name) => `/assets/${name}`;
 const slides = [
@@ -65,6 +67,9 @@ const guideLabels = {
   carpeta: ["Mis trámites", "My applications"],
   renta: ["Renta", "Tax return"],
   ayudas: ["Ayudas y becas", "Grants and scholarships"],
+  padron: ["Padrón", "Local register"],
+  sanitaria: ["Tarjeta sanitaria", "Health card"],
+  certificado: ["Certificado digital", "Digital certificate"],
 };
 function SourceIcon({ name, ...props }) {
   return (
@@ -284,12 +289,17 @@ function Composer({
   );
 }
 
-function Answer({ message, t, lang, onAsk, onSources }) {
+function Answer({ message, t, lang, onAsk, onSources, onTerritory }) {
   const [rating, setRating] = useState(null);
   const [copied, setCopied] = useState(false);
   const [copyError, setCopyError] = useState(false);
   const guide = guides.find((g) => g.id === message.guide);
-  const data = getGuideContent(message.guide, message.detail, lang);
+  const data = getGuideContent(
+    message.guide,
+    message.detail,
+    lang,
+    message.territory,
+  );
   const refs = data?.refs || ["pag"];
   const actions = data?.actions || [
     [
@@ -311,7 +321,7 @@ function Answer({ message, t, lang, onAsk, onSources }) {
     : guides.map((g) => (lang === "en" ? g.en.question : g.question));
   const copy = async () => {
     const text = data
-      ? `${data.title}\n\n${data.intro}\n\n${data.steps.map((s, i) => `${i + 1}. ${s[0]} ${s[1]}`).join("\n\n")}\n\n${refs.map((k) => sources[k].url).join("\n")}`
+      ? `${data.title}\n\n${data.intro}\n\n${data.steps.map((s, i) => `${i + 1}. ${s[0]} ${s[1]}`).join("\n\n")}${data.territoryNotice ? `\n\n${data.territoryNotice}` : ""}\n\n${refs.map((k) => sources[k].url).join("\n")}`
       : t(
           "Consulta el Punto de Acceso General: ",
           "Visit the public service portal: ",
@@ -350,8 +360,8 @@ function Answer({ message, t, lang, onAsk, onSources }) {
       <p>
         {data?.intro ||
           t(
-            "Esta consulta queda fuera de las siete guías preparadas de esta versión. Busca el trámite y su organismo en el Punto de Acceso General, o elige uno de los temas disponibles abajo.",
-            "This question falls outside this version’s seven prepared guides. Find the procedure and its authority in the official public service directory, or choose an available topic below.",
+            "No hemos identificado un único trámite entre las diez guías preparadas. Pregunta por un trámite cada vez, busca su organismo en el Punto de Acceso General o elige uno de los temas disponibles abajo.",
+            "We could not identify a single procedure among the ten prepared guides. Ask about one procedure at a time, find its authority in the official directory or choose an available topic below.",
           )}
       </p>
       {data && (
@@ -384,6 +394,18 @@ function Answer({ message, t, lang, onAsk, onSources }) {
             </li>
           ))}
         </ol>
+      )}
+      {data?.territoryKind && (
+        <TerritoryPicker
+          kind={data.territoryKind}
+          territory={data.territory}
+          t={t}
+          busy={message.busy}
+          onChoose={(selection) => onTerritory(message, selection)}
+        />
+      )}
+      {data?.territoryNotice && (
+        <p className="territory-notice">{data.territoryNotice}</p>
       )}
       <div className="official-actions">
         {actions.map(([ref, es, en]) => (
@@ -459,7 +481,7 @@ function Answer({ message, t, lang, onAsk, onSources }) {
           <button
             key={question}
             disabled={message.busy}
-            onClick={() => onAsk(question)}
+            onClick={() => onAsk(question, message)}
           >
             {question}
             <ArrowUpRight size={18} />
@@ -541,7 +563,10 @@ export function App() {
         ? document.getElementById(`answer-${latest.id}`)
         : endRef.current;
       if (showAnswer && questionTrigger.current) {
-        if (!questionTrigger.current.isConnected)
+        if (
+          !questionTrigger.current.isConnected ||
+          questionTrigger.current.closest(".territory-picker")
+        )
           target?.focus({ preventScroll: true });
         questionTrigger.current = null;
       }
@@ -561,14 +586,10 @@ export function App() {
     setShowDock(false);
     window.scrollTo({ top: 0, behavior: "instant" });
   };
-  const ask = (query) => {
+  const submitQuery = (query, resolution) => {
     if (busy) return;
     questionTrigger.current = document.activeElement;
-    const last = messages
-      .slice()
-      .reverse()
-      .find((m) => m.role === "assistant" && !m.stopped)?.guide;
-    const { guide, detail } = resolveGuide(query, last);
+    const { guide, detail, territory } = resolution;
     setMessages((ms) => [
       ...ms,
       { role: "user", text: query, id: crypto.randomUUID() },
@@ -583,11 +604,32 @@ export function App() {
           role: "assistant",
           guide: guide?.id || null,
           detail,
+          territory,
           id: crypto.randomUUID(),
         },
       ]);
       setBusy(false);
     }, 650);
+  };
+  const ask = (query, originAnswer) => {
+    const previousAnswer =
+      originAnswer ||
+      messages
+        .slice()
+        .reverse()
+        .find((message) => message.role === "assistant");
+    submitQuery(query, resolveConsultation(query, previousAnswer));
+  };
+  const chooseTerritory = (message, selection) => {
+    const guide = guides.find((item) => item.id === message.guide);
+    const territory = prepareTerritory(guide?.territoryKind, selection);
+    if (!territory) return;
+    const data = getGuideContent(message.guide, message.detail, lang);
+    submitQuery(`${data.question} · ${territory.label}`, {
+      guide,
+      detail: message.detail,
+      territory,
+    });
   };
   const stop = () => {
     clearTimeout(timer.current);
@@ -1228,6 +1270,7 @@ export function App() {
                   t={t}
                   lang={lang}
                   onAsk={ask}
+                  onTerritory={chooseTerritory}
                   onSources={(refs) => setModal({ type: "sources", refs })}
                 />
               ),

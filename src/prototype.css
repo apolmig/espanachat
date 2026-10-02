@@ -1135,6 +1135,115 @@ textarea {
   color: var(--navy);
   background: #f2f6fc;
 }
+.territory-picker {
+  margin: 28px 0 20px;
+  padding: 20px;
+  border: 1px solid #dce3eb;
+  border-radius: 22px;
+  background: #f8fafc;
+}
+.territory-picker h3 {
+  margin: 0 0 8px;
+  font-size: 17px;
+  line-height: 25px;
+  font-weight: 500;
+}
+.territory-picker p {
+  margin: 0 0 16px;
+  font-size: 14px;
+  line-height: 22px;
+  color: #536073;
+}
+.territory-picker label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 500;
+}
+.territory-fields {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+}
+.territory-fields input,
+.territory-fields select {
+  min-width: 0;
+  width: 100%;
+  flex: 1;
+  min-height: 48px;
+  padding: 12px;
+  border: 1px solid #b8c7d8;
+  border-radius: 12px;
+  background: white;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 16px;
+}
+.territory-submit {
+  min-height: 48px;
+  padding: 12px 18px;
+  border-radius: 24px;
+  background: var(--navy);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+.territory-submit:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.territory-picker .territory-optional {
+  margin: 12px 0 0;
+  font-size: 12px;
+  line-height: 19px;
+}
+.territory-picker .territory-error {
+  color: #a2172d;
+  margin: 12px 0;
+}
+.territory-selection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 16px;
+  margin: 24px 0 12px;
+  border-radius: 16px;
+  background: #f5f7fa;
+  font-size: 14px;
+  line-height: 22px;
+}
+.territory-selection button {
+  min-height: 44px;
+  padding: 8px;
+  color: var(--navy);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.territory-notice {
+  margin: 12px 0 20px;
+  font-size: 14px;
+  line-height: 22px;
+  color: #536073;
+}
+@media (max-width: 560px) {
+  .territory-picker {
+    padding: 16px;
+  }
+  .territory-fields {
+    flex-direction: column;
+  }
+  .territory-fields input,
+  .territory-fields select {
+    flex: auto;
+  }
+}
 .source-list {
   margin-top: 30px;
   display: flex;

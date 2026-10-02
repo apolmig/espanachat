@@ -60,16 +60,16 @@ export function InfoPage({ route, t, link }) {
             MagnifyingGlass,
             t("Encuentra una guía.", "Find a guide."),
             t(
-              "Esta versión compara palabras con siete temas preparados. No hay IA ni búsqueda en internet conectadas. Si no hay una guía, te indicamos dónde buscar.",
-              "This version matches keywords against seven prepared topics. No AI or internet search is connected. If a guide is unavailable, we suggest where to look.",
+              "Esta versión reconoce consultas sobre diez temas preparados. No hay IA ni búsqueda en internet conectadas. Si no hay una guía, te indicamos dónde buscar.",
+              "This version matches questions about ten prepared topics. No AI or internet search is connected. If a guide is unavailable, we suggest where to look.",
             ),
           )}
           {card(
             Buildings,
             t("Comprueba la fuente.", "Check the source."),
             t(
-              "Cada respuesta incluye enlaces al organismo responsable. Revisa allí los requisitos, documentación y plazos vigentes.",
-              "Each guide links to the responsible authority. Check current requirements, documents and deadlines there.",
+              "Cada respuesta enlaza al organismo responsable. Para padrón y tarjeta sanitaria puedes elegir municipio o comunidad. Revisa los requisitos y plazos en la fuente oficial.",
+              "Each guide links to the responsible authority. For municipal registration and health cards, you can choose a municipality or region. Check requirements and deadlines at the official source.",
             ),
           )}
           {card(
@@ -141,10 +141,13 @@ export function InfoPage({ route, t, link }) {
           )}
           {card(
             Globe,
-            t("Sin ubicación ni seguimiento.", "No location or tracking."),
             t(
-              "No solicitamos tu ubicación ni usamos analítica publicitaria. El servidor de desarrollo recibe las peticiones técnicas necesarias para cargar la web.",
-              "We do not request your location or use advertising analytics. The development server receives the technical requests needed to load the website.",
+              "Sin geolocalización ni seguimiento.",
+              "No geolocation or tracking.",
+            ),
+            t(
+              "No accedemos a tu ubicación GPS ni usamos analítica publicitaria. El municipio o comunidad que elijas queda solo en esta conversación. El alojamiento recibe las peticiones técnicas para cargar la web.",
+              "We do not access GPS location or use advertising analytics. A municipality or region you choose stays only in this conversation. The host receives the technical requests needed to load the website.",
             ),
           )}
           {card(
@@ -195,8 +198,8 @@ export function InfoPage({ route, t, link }) {
           </p>
           <p>
             {t(
-              "La primera versión incluye siete guías revisadas con fuentes oficiales, un lector local de PDF y una interfaz accesible desde móvil y ordenador. Conectar un asistente real requerirá una base documental actualizada, controles de seguridad y evaluación de respuestas.",
-              "The first version includes seven guides based on official sources, a local PDF reader and a mobile-friendly interface. A live assistant will require an updated document index, security controls and answer evaluation.",
+              "Esta versión incluye diez guías revisadas con fuentes oficiales, un lector local de PDF y una interfaz accesible desde móvil y ordenador. Conectar un asistente real requerirá una base documental actualizada, controles de seguridad y evaluación de respuestas.",
+              "This version includes ten guides based on official sources, a local PDF reader and a mobile-friendly interface. A live assistant will require an updated document index, security controls and answer evaluation.",
             )}
           </p>
           {link(
@@ -289,8 +292,8 @@ export function InfoPage({ route, t, link }) {
       [
         t("¿Hay una IA conectada?", "Is a live AI connected?"),
         t(
-          "No. El texto se compara con siete temas preparados. Las guías se cargan localmente, con enlaces para comprobar la información. No se realiza una búsqueda en tiempo real.",
-          "No. Questions are matched against seven prepared topics. Guides load locally with source links. No real-time search takes place.",
+          "No. El texto se compara con diez temas preparados. Las guías se cargan localmente, con enlaces para comprobar la información. No se realiza una búsqueda en tiempo real.",
+          "No. Questions are matched against ten prepared topics. Guides load locally with source links. No real-time search takes place.",
         ),
       ],
       [

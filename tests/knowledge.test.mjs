@@ -44,7 +44,8 @@ test("all guides have real source entries and supported follow-up questions", ()
 test("follow-ups provide a distinct answer in the same topic in both languages", () => {
   for (const guide of guides) {
     for (const lang of ["es", "en"]) {
-      const question = lang === "en" ? guide.detail.en.question : guide.detail.question;
+      const question =
+        lang === "en" ? guide.detail.en.question : guide.detail.question;
       const result = resolveGuide(question, "dni");
       assert.equal(result.guide?.id, guide.id, question);
       assert.equal(result.detail, guide.detail.id);
@@ -56,9 +57,18 @@ test("follow-ups provide a distinct answer in the same topic in both languages",
   }
 });
 test("short follow-ups use the current topic without carrying unrelated context", () => {
-  assert.equal(resolveGuide("¿Qué documentos necesito?", "dni").detail, "documents");
-  assert.equal(resolveGuide("Sin identificación electrónica", "vida").detail, "without-id");
-  assert.equal(resolveGuide("Where do I register?", "paro").detail, "employment-service");
+  assert.equal(
+    resolveGuide("¿Qué documentos necesito?", "dni").detail,
+    "documents",
+  );
+  assert.equal(
+    resolveGuide("Sin identificación electrónica", "vida").detail,
+    "without-id",
+  );
+  assert.equal(
+    resolveGuide("Where do I register?", "paro").detail,
+    "employment-service",
+  );
   assert.equal(resolveGuide("¿Qué documentos necesito?", "paro").guide, null);
   assert.equal(resolveGuide("Sin identificación electrónica").guide, null);
   assert.equal(resolveGuide("Qué tiempo hace hoy", "dni").guide, null);
@@ -69,7 +79,10 @@ test("every step and action points to a source included in its answer", () => {
     for (const detail of [null, guide.detail.id]) {
       const content = getGuideContent(guide.id, detail);
       assert.equal(content.stepRefs.length, content.steps.length);
-      for (const ref of [...content.stepRefs.flat(), ...content.actions.map(([ref]) => ref)]) {
+      for (const ref of [
+        ...content.stepRefs.flat(),
+        ...content.actions.map(([ref]) => ref),
+      ]) {
         assert.ok(content.refs.includes(ref), `${guide.id}/${detail}: ${ref}`);
         assert.ok(sources[ref], ref);
         const url = new URL(sources[ref].url);
@@ -83,24 +96,36 @@ test("every step and action points to a source included in its answer", () => {
 });
 test("practical actions land on the appropriate service, not the first source", () => {
   assert.equal(getGuideContent("dni").actions[0][0], "cita");
-  assert.equal(getGuideContent("paro", "employment-service").actions[0][0], "demanda");
+  assert.equal(
+    getGuideContent("paro", "employment-service").actions[0][0],
+    "demanda",
+  );
   assert.equal(getGuideContent("ayudas").actions[0][0], "ayudas");
   assert.equal(getGuideContent("renta").actions[0][0], "irpf");
 });
 test("generic words and word fragments do not select unrelated guides", () => {
   for (const query of [
-    "Quiero renovar mi tarjeta sanitaria",
-    "¿Cómo saco el certificado de empadronamiento?",
     "I need to renew my driving licence",
     "Necesito ayuda",
-    "Necesito un certificado digital",
-    "Quiero renovar mi certificado electrónico",
     "Vivo en un enclave de cuarenta habitantes",
   ])
     assert.equal(findGuide(query), null, query);
   assert.equal(findGuide("Quiero renovar el paro")?.id, "paro");
   assert.equal(findGuide("¿Dónde encuentro becas?")?.id, "ayudas");
   assert.equal(findGuide("I need rent support")?.id, "ayudas");
+  assert.equal(
+    findGuide("Quiero renovar mi tarjeta sanitaria")?.id,
+    "sanitaria",
+  );
+  assert.equal(
+    findGuide("¿Cómo saco el certificado de empadronamiento?")?.id,
+    "padron",
+  );
+  assert.equal(findGuide("Necesito un certificado digital")?.id, "certificado");
+  assert.equal(
+    findGuide("Quiero renovar mi certificado electrónico")?.id,
+    "certificado",
+  );
 });
 test("basic personal-data patterns are blocked without blocking ordinary questions", () => {
   for (const text of [
